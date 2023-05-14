@@ -1,4 +1,4 @@
-package com.study.battleq.infrastructure;
+package com.study.battleq.infrastructure.config;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -20,10 +20,11 @@ import java.util.List;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
-@Profile("!prod")
+@Profile("!prd")
 @Configuration
 @RequiredArgsConstructor
 public class OpenApiConfig {
+
     private final Environment environment;
 
     @Bean
@@ -58,14 +59,14 @@ public class OpenApiConfig {
 
     private Info info() {
         return new Info()
-                .title("Cono-With-Me API");
+                .title("Battle-Q API");
     }
 
 
     private SecurityScheme securityScheme() {
         return new SecurityScheme()
                 .type(Type.HTTP)
-                .scheme("bearer")
+                .scheme("Bearer")
                 .in(In.HEADER)
                 .bearerFormat("JWT")
                 .name(AUTHORIZATION);
