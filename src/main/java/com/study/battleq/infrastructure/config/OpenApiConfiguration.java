@@ -23,7 +23,7 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 @Profile("!prd")
 @Configuration
 @RequiredArgsConstructor
-public class OpenApiConfig {
+public class OpenApiConfiguration {
 
     private final Environment environment;
 
