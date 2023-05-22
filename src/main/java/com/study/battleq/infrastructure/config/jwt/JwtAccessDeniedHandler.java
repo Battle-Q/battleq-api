@@ -1,4 +1,4 @@
-package com.study.battleq.infrastructure.jwt;
+package com.study.battleq.infrastructure.config.jwt;
 
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;

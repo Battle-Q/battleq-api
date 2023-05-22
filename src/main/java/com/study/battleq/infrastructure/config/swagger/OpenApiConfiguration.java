@@ -1,4 +1,4 @@
-package com.study.battleq.infrastructure.config;
+package com.study.battleq.infrastructure.config.swagger;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;

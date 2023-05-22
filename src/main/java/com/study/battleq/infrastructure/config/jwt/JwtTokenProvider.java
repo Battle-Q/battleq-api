@@ -1,4 +1,4 @@
-package com.study.battleq.infrastructure.jwt;
+package com.study.battleq.infrastructure.config.jwt;
 
 import com.study.battleq.infrastructure.config.properties.JwtProperties;
 import com.study.battleq.modules.user.service.dto.TokenDto;

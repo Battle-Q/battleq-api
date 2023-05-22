@@ -1,4 +1,4 @@
-package com.study.battleq.infrastructure.jwt;
+package com.study.battleq.infrastructure.config.jwt;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;

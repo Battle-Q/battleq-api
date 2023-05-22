@@ -1,9 +1,9 @@
-package com.study.battleq.infrastructure.config;
+package com.study.battleq.infrastructure.config.security;
 
-import com.study.battleq.infrastructure.jwt.CustomAuthenticationEntryPoint;
-import com.study.battleq.infrastructure.jwt.JwtAccessDeniedHandler;
-import com.study.battleq.infrastructure.jwt.JwtFilter;
-import com.study.battleq.infrastructure.jwt.JwtTokenProvider;
+import com.study.battleq.infrastructure.config.jwt.CustomAuthenticationEntryPoint;
+import com.study.battleq.infrastructure.config.jwt.JwtAccessDeniedHandler;
+import com.study.battleq.infrastructure.config.jwt.JwtFilter;
+import com.study.battleq.infrastructure.config.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
