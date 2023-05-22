@@ -2,6 +2,7 @@ package com.study.battleq.modules.user.controller;
 
 import com.study.battleq.infrastructure.common.dto.ResponseDto;
 import com.study.battleq.modules.user.controller.request.LoginRequest;
+import com.study.battleq.modules.user.service.dto.TokenDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -28,12 +29,12 @@ public class UserController {
                     @ApiResponse(
                             responseCode = "200",
                             description = "요청 성공",
-                            content = @Content(schema = @Schema(implementation = ResponseDto.class))
+                            content = @Content(schema = @Schema(implementation = TokenDto.class))
                     )
             }
     )
     @PostMapping("/login")
-    public ResponseDto<?> login(@RequestBody @Valid LoginRequest request) {
+    public ResponseDto<TokenDto> login(@RequestBody @Valid LoginRequest request) {
         return ResponseDto.ok();
     }
 }
