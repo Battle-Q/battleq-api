@@ -26,11 +26,11 @@ public class UserEntity extends BaseEntity {
 
     @Column(name = "email", nullable = false, unique = true)
     private String email;
-    @Column(name = "email", nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
-    @Column(name = "email", nullable = false, length = 1024)
+    @Column(name = "password", nullable = false, length = 1024)
     private String password;
-    @Column(name = "email", nullable = false, unique = true)
+    @Column(name = "nickname", nullable = false, unique = true)
     private String nickname;
     @Column(name = "authority", nullable = false)
     @Enumerated(value = EnumType.STRING)
