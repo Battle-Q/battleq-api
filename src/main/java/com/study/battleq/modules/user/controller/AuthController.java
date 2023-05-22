@@ -17,11 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 
-@Tag(name = "회원")
+@Tag(name = "Auth")
 @RestController
 @RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
-public class UserController {
+public class AuthController {
 
     @Operation(summary = "로그인", description = "로그인 후 토큰을 발급받습니다.")
     @ApiResponses(
