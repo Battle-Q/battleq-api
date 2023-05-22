@@ -1,5 +1,7 @@
 package com.study.battleq.infrastructure.config;
 
+import com.study.battleq.infrastructure.jwt.CustomAuthenticationEntryPoint;
+import com.study.battleq.infrastructure.jwt.JwtAccessDeniedHandler;
 import com.study.battleq.infrastructure.jwt.JwtFilter;
 import com.study.battleq.infrastructure.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +25,8 @@ import java.util.Arrays;
 public class SecurityConfiguration {
 
     private final JwtTokenProvider jwtTokenProvider;
+    private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -54,6 +58,8 @@ public class SecurityConfiguration {
                 .anyRequest().permitAll()
                 .and()
                 .exceptionHandling()
+                .accessDeniedHandler(jwtAccessDeniedHandler)
+                .authenticationEntryPoint(customAuthenticationEntryPoint)
                 .and()
                 .formLogin().disable()
                 .addFilterBefore(new JwtFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
