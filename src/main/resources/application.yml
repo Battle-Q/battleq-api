@@ -21,3 +21,8 @@ management:
     web:
       exposure:
         include: health, info, refresh
+
+jwt:
+  access-token-expire-time: 1800
+  refresh-token-expire-time: 604800
+  secret: secret
