@@ -1,4 +1,4 @@
-package com.study.battleq.modules.user.service;
+package com.study.battleq.modules.user.service.usecase;
 
 import com.study.battleq.modules.user.service.dto.TokenDto;
 
