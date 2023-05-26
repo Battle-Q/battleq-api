@@ -11,6 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -45,6 +46,6 @@ class CustomUserDetailsServiceTest {
         when(userQueryService.findByEmail(anyString())).thenThrow(UserNotFoundException.class);
         //when
         //then
-        assertThrows(UserNotFoundException.class, () -> customUserDetailsService.loadUserByUsername("email"));
+        assertThrows(UsernameNotFoundException.class, () -> customUserDetailsService.loadUserByUsername("email"));
     }
 }
