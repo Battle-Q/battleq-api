@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class UserQueryRepository {
+public class UserQueryService {
 
     private final UserRepository userRepository;
 

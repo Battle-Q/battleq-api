@@ -4,7 +4,6 @@ import com.study.battleq.modules.user.domain.entity.Authority;
 import com.study.battleq.modules.user.domain.entity.UserEntity;
 import com.study.battleq.modules.user.domain.repository.exception.UserNotFoundException;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +18,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 @ActiveProfiles("local")
-class UserQueryRepositoryTest {
+class UserQueryServiceTest {
 
     @Autowired
-    private UserQueryRepository userQueryRepository;
+    private UserQueryService userQueryService;
 
     @Autowired
     private UserRepository userRepository;
@@ -43,7 +42,7 @@ class UserQueryRepositoryTest {
         userRepository.save(UserEntity.of(email, "name", "pwd", "nickName", Authority.ROLE_ADMIN));
         entityManager.clear();
         //when
-        UserEntity entity = userQueryRepository.findByEmail(email);
+        UserEntity entity = userQueryService.findByEmail(email);
         //then
         assertEquals("name", entity.getName());
         assertEquals("nickName", entity.getNickname());
@@ -55,6 +54,6 @@ class UserQueryRepositoryTest {
         //given
         //when
         //then
-        assertThrows(UserNotFoundException.class, ()-> userQueryRepository.findByEmail("email"));
+        assertThrows(UserNotFoundException.class, ()-> userQueryService.findByEmail("email"));
     }
 }

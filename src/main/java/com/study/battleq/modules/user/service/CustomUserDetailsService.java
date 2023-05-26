@@ -2,7 +2,7 @@ package com.study.battleq.modules.user.service;
 
 import com.study.battleq.modules.user.domain.entity.BattleQUser;
 import com.study.battleq.modules.user.domain.entity.UserEntity;
-import com.study.battleq.modules.user.domain.repository.UserQueryRepository;
+import com.study.battleq.modules.user.domain.repository.UserQueryService;
 import com.study.battleq.modules.user.domain.repository.exception.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -17,7 +17,7 @@ import java.util.Collections;
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
 
-    private final UserQueryRepository userQueryRepository;
+    private final UserQueryService userQueryService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -27,7 +27,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     private UserEntity findByEmail(String username) {
         try {
-            return userQueryRepository.findByEmail(username);
+            return userQueryService.findByEmail(username);
         } catch (UserNotFoundException e) {
             throw new UsernameNotFoundException("해당 회원이 존재하지 않습니다.");
         }
