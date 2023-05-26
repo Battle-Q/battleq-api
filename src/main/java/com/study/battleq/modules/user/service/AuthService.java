@@ -1,25 +1,29 @@
 package com.study.battleq.modules.user.service;
 
+import com.study.battleq.infrastructure.common.service.AuthenticationManagerService;
 import com.study.battleq.infrastructure.config.jwt.JwtTokenProvider;
 import com.study.battleq.modules.user.service.dto.TokenDto;
+import com.study.battleq.modules.user.service.exception.LoginFailedException;
 import com.study.battleq.modules.user.service.usecase.LoginUseCase;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class AuthService implements LoginUseCase {
 
-    private final AuthenticationManagerBuilder authenticationManagerBuilder;
+    private final AuthenticationManagerService authenticationManagerService;
     private final JwtTokenProvider jwtTokenProvider;
 
     @Override
     public TokenDto login(String email, String password) {
-        Authentication authentication = authenticationManagerBuilder.getObject()
-                .authenticate(new UsernamePasswordAuthenticationToken(email, password));
-        return jwtTokenProvider.createToken(authentication);
+        try {
+            Authentication authentication = authenticationManagerService.getAuthentication(email, password);
+            return jwtTokenProvider.createToken(authentication);
+        } catch (AuthenticationException e) {
+            throw LoginFailedException.thrown();
+        }
     }
 }
