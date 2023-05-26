@@ -19,9 +19,13 @@ public class AuthService implements LoginUseCase {
 
     @Override
     public TokenDto login(String email, String password) {
+        Authentication authentication = getAuthentication(email, password);
+        return jwtTokenProvider.createToken(authentication);
+    }
+
+    private Authentication getAuthentication(String email, String password) {
         try {
-            Authentication authentication = authenticationManagerService.getAuthentication(email, password);
-            return jwtTokenProvider.createToken(authentication);
+            return authenticationManagerService.getAuthentication(email, password);
         } catch (AuthenticationException e) {
             throw LoginFailedException.thrown();
         }
