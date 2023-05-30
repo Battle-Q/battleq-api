@@ -15,7 +15,7 @@ public class BoardDto {
     private String title;
     private String content;
     private String category;
-    private boolean importance;
+    private boolean priority;
     private String writer;
     private int view;
 
@@ -24,7 +24,7 @@ public class BoardDto {
         this.title = boardEntity.getTitle();
         this.content = boardEntity.getContent();
         this.category = boardEntity.getTitle();
-        this.importance = boardEntity.isImportance();
+        this.priority = boardEntity.isPriority();
         this.writer = boardEntity.getWriter();
         this.view = boardEntity.getView();
     }

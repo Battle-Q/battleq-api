@@ -9,13 +9,12 @@ import javax.validation.constraints.NotEmpty;
 
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 public class CreateBoardRequest {
-    @NotEmpty
+    @NotEmpty(message = "제목은 필수값 입니다.")
     private String title;
     private String content;
     private String category;
-    private boolean importance;
+    private boolean priority;
 
     //private User user;
 
@@ -24,7 +23,7 @@ public class CreateBoardRequest {
                 .title(title)
                 .content(content)
                 .category(category)
-                .importance(importance)
+                .priority(priority)
                 //writer(User)
                 .view(0)
                 .build();

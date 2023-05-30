@@ -13,10 +13,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 @ActiveProfiles("local")
@@ -25,7 +23,7 @@ public class BoardApiControllerTest {
     private static final String TITLE = "title";
     private static final String CONTENT = "content";
     private static final String CATEGORY = "freeBoard";
-    private static final boolean IMPORTANCE = false;
+    private static final boolean PRIORITY = false;
     private static final String WRITER = "user";
 
     @Autowired
@@ -38,7 +36,7 @@ public class BoardApiControllerTest {
     EntityManager entityManager;
 
     @Test
-    @DisplayName("게시판 저장 성공")
+    @DisplayName("게시판 저장 성공 완료 테스트")
     void 게시판_저장_성공() throws Exception {
         System.out.println("◼◼◼◼◼ BoardEntity Save Start... ◼◼◼◼◼ ︎");
 
@@ -47,7 +45,7 @@ public class BoardApiControllerTest {
                 .title(TITLE)
                 .content(CONTENT)
                 .category(CATEGORY)
-                .importance(IMPORTANCE)
+                .priority(PRIORITY)
                 .writer(WRITER)
                 .build();
         // 저장
@@ -71,7 +69,7 @@ public class BoardApiControllerTest {
                 .title(TITLE)
                 .content(CONTENT)
                 .category(CATEGORY)
-                .importance(IMPORTANCE)
+                .priority(PRIORITY)
                 .writer(WRITER)
                 .build();
 

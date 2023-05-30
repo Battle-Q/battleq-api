@@ -11,6 +11,7 @@ public interface BoardRepository extends CrudRepository<BoardEntity, Long> {
 
     //TODO Page 페이징 처리
     //TODO 중복 메서드 개선?
+    //TODO Soft Delete ex) findByTitleAndDeleteAtIsNull();
     public List<BoardEntity> findAll();
     public List<BoardEntity> findByTitle(String title);
     public List<BoardEntity> findByContent(String content);

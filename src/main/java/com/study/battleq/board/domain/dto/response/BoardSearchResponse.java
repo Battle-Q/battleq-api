@@ -1,15 +1,12 @@
 package com.study.battleq.board.domain.dto.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.http.HttpStatus;
 
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 
-@Data
+@Getter
 @AllArgsConstructor
 public class BoardSearchResponse<T> {
     private LocalDateTime timeStamp;

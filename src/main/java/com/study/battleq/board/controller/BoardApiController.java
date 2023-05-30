@@ -7,9 +7,7 @@ import com.study.battleq.board.domain.dto.response.CreateBoardResponse;
 import com.study.battleq.board.domain.entity.BoardEntity;
 import com.study.battleq.board.service.BoardService;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -31,16 +29,16 @@ public class BoardApiController {
         return new CreateBoardResponse(id);
     }
 
-    @GetMapping("api/v1/board")
+    @GetMapping("/api/v1/board")
     public BoardSearchResponse findAllBoard(){
-        // Entity 그대로 나가도 되나?
-        List<BoardEntity> boardEntityList = boardService.findAll();
-        return new BoardSearchResponse(LocalDateTime.now(), HttpStatus.OK, boardEntityList);
+        // TODO : ResponseDTO로 변환 필요
+        List<BoardEntity> boardEntities = boardService.findAll();
+        return new BoardSearchResponse(LocalDateTime.now(), HttpStatus.OK, boardEntities);
     }
 
-    @GetMapping("api/v1/board/{title}")
+    @GetMapping("/api/v1/board/{title}")
     public BoardSearchResponse findByTitle(@PathVariable("title") String title){
-        List<BoardEntity> boardEntityList = boardService.findByTitle(title);
-        return new BoardSearchResponse(LocalDateTime.now(), HttpStatus.OK, boardEntityList);
+        List<BoardEntity> boardEntities = boardService.findByTitle(title);
+        return new BoardSearchResponse(LocalDateTime.now(), HttpStatus.OK, boardEntities);
     }
 }

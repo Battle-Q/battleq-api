@@ -20,7 +20,7 @@ public class BoardService {
                 .title(boardDto.getTitle())
                 .content(boardDto.getContent())
                 .category(boardDto.getCategory())
-                .importance(boardDto.isImportance())
+                .priority(boardDto.isPriority())
                 .writer(boardDto.getWriter())
                 .build();
 
@@ -31,7 +31,7 @@ public class BoardService {
     public BoardEntity findById(Long id) {
         Optional<BoardEntity> boardEntity = boardRepository.findById(id);
 
-        /* 어떤게 좋은 코드인가?
+        /* 어떤게 좋은 코드인가? orElseThrow()로 선언하여 Exception 사용
         BoardEntity board = boardRepository.findById(id).orElseThrow(() -> new Exception());
 
         if(!boardEntity.isPresent()){

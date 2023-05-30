@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotEmpty;
 
 @Getter
-@NoArgsConstructor
 @AllArgsConstructor
 public class CreateBoardResponse {
     private Long id;

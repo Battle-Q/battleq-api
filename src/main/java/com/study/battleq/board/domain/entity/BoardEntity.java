@@ -14,29 +14,28 @@ import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Getter
-@EntityListeners(AuditingEntityListener.class)
 @Table(name = "boards")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BoardEntity extends BaseEntity {
-    @NotEmpty
     private String title;
 
     private String content;
 
     private String category;
 
-    private boolean importance = false;
+    private boolean priority;
 
     private String writer;
 
-    private int view = 0;
+    private int view;
 
     @Builder
-    private BoardEntity(String title, String content, String category, boolean importance, String writer) {
+    private BoardEntity(String title, String content, String category, boolean priority, String writer) {
         this.title = title;
         this.content = content;
         this.category = category;
-        this.importance = importance;
+        this.priority = priority;
         this.writer = writer;
+        this.view = 0;
     }
 }
