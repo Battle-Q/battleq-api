@@ -4,6 +4,7 @@ import com.study.battleq.board.domain.entity.BoardEntity;
 import com.study.battleq.board.repository.BoardRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledOnOs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,7 +15,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static java.time.Duration.ofMinutes;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.condition.OS.MAC;
+import static org.junit.jupiter.api.condition.OS.WINDOWS;
 
 @SpringBootTest
 @ActiveProfiles("local")
@@ -55,14 +59,12 @@ public class BoardApiControllerTest {
                 .title("dump")
                 .build();
         //then
-        assertEquals(saveEntity, bookEntity);
+        assertEquals(saveEntity, bookEntity, "추가 메세지 작성 가능");
     }
 
     @Test
     @DisplayName("게시판 검색 성공")
     void 게시판_검색_성공() throws Exception {
-        System.out.println("◼◼◼◼◼ BoardEntity Search Start... ◼◼◼◼◼ ︎");
-
         //given
         String searchParam = "title";
         BoardEntity bookEntity = BoardEntity.builder()
@@ -79,5 +81,48 @@ public class BoardApiControllerTest {
 
         //then
         assertEquals(TITLE, boardEntity.get(0).getTitle());
+    }
+
+
+    // TODO 테스트 코드 익숙해지면 하단 코드들 삭제
+    @Test
+    @DisplayName("테스트코드 연습")
+    void 테스트_코드_연습(){
+        assertThrows(CustomException.class, () -> new CustomClass(1));
+    }
+    
+    private class CustomException extends Exception {
+        public CustomException(String message){
+            super(message);
+        }
+    }
+
+    public class CustomClass {
+        private int customInt;
+
+        public CustomClass(int customInt) throws CustomException {
+            if(customInt > 2){
+                throw new CustomException("2보다 큼");
+            }
+            this.customInt = customInt;
+        }
+    }
+
+    @Test
+    void 타임아웃() {
+        assertTimeout(ofMinutes(2), () -> {
+            // 2분 미만으로 실행되는 동작 실행
+
+        });
+        String actualResult = assertTimeout(ofMinutes(2), () -> {
+            return "a result";
+        });
+        assertEquals("a result", actualResult);
+    }
+
+    @Test
+    @DisabledOnOs(value = MAC,disabledReason = "맥에서는 테스트하지 말아요.")
+    void OS_테스트(){
+
     }
 }
