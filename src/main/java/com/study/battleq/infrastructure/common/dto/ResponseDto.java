@@ -8,7 +8,7 @@ public class ResponseDto<T> {
     private T data;
     private HttpStatus status;
 
-    private ResponseDto(T data, HttpStatus status) {
+    public ResponseDto(T data, HttpStatus status) {
         this.data = data;
         this.status = status;
     }
