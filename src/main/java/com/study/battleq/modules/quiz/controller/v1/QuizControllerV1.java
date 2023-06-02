@@ -18,10 +18,10 @@ public class QuizControllerV1 {
     private final QuizService quizService;
 
     @GetMapping("/{quizId}")
-    public ResponseDto<QuizDto> getQuiz(@PathVariable("quizId") String quizId){
+    public ResponseDto<QuizDto> getQuiz(@PathVariable("quizId") String quizId) {
 
         //ResponseDto<QuizDto>.ok()
-        return new ResponseDto<QuizDto>(quizService.getQuiz(quizId), HttpStatus.OK);
+        return ResponseDto.ok(quizService.getQuiz(quizId));
     }
 
 }
