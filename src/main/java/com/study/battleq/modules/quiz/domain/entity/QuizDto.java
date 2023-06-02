@@ -8,13 +8,10 @@ import lombok.Getter;
 @AllArgsConstructor
 public class QuizDto {
 
-    @Getter
     private Long id;
 
-    @Getter
     private QuizType quizType;
 
-    @Getter
     private Object quizData;
 
 
