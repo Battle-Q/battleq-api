@@ -5,6 +5,10 @@ public enum QuizType {
     SHORT_ANSWER("단답형"),
     MULTIPLE_CHOICE("객관식");
 
+    //생성자화
+    private String description;
+
     QuizType(String quizType) {
+        this.description = quizType;
     }
 }

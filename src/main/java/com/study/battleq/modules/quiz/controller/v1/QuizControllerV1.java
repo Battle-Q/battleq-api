@@ -10,13 +10,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/v1/quiz")
+@RequestMapping("/api/v1/quizzes")
 public class QuizControllerV1 {
 
     private final QuizService quizService;
 
     @GetMapping("/{quizId}")
     public QuizDto getQuiz(@PathVariable("quizId") String quizId){
+
+        //ResponseDto<QuizDto>.ok()
         return quizService.getQuiz(quizId);
     }
 
