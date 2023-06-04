@@ -24,7 +24,7 @@ public class AuthService implements LoginUseCase, RefreshTokenUseCase {
     private final JwtTokenProvider jwtTokenProvider;
     private final JwtProperties properties;
     private final RedisRepository redisRepository;
-    private static final String REFRESH_TOKEN_PREFIX = "REFRESH_TOKEN:";
+
 
     @Override
     public TokenDto login(String email, String password) {
@@ -35,7 +35,7 @@ public class AuthService implements LoginUseCase, RefreshTokenUseCase {
     }
 
     private void saveRefreshToken(String id, TokenDto tokenDto) {
-        redisRepository.save(REFRESH_TOKEN_PREFIX + id, tokenDto.getRefreshToken(),
+        redisRepository.save(id, tokenDto.getRefreshToken(),
                 properties.getRefreshTokenExpireTime(),
                 TimeUnit.MILLISECONDS);
     }
@@ -51,12 +51,27 @@ public class AuthService implements LoginUseCase, RefreshTokenUseCase {
     @Override
     public TokenDto refresh(String accessToken, String refreshToken) {
         validateRefreshToken(refreshToken);
-        return null;
+        Authentication authentication = getAuthenticationByAccessToken(accessToken);
+        String refreshTokenByRedis = redisRepository.findByUserId(authentication.getName()).orElseThrow(RefreshTokenExpiredException::thrown);
+        if (!refreshTokenByRedis.equals(refreshToken)) {
+            throw new IllegalArgumentException("RefreshToken이 일치하지 않습니다.");
+        }
+        TokenDto tokenDto = jwtTokenProvider.createToken(authentication);
+        saveRefreshToken(authentication.getName(), tokenDto);
+        return tokenDto;
     }
 
     private void validateRefreshToken(String refreshToken) {
         if (!jwtTokenProvider.isValidateToken(refreshToken)) {
             throw RefreshTokenExpiredException.thrown();
+        }
+    }
+
+    private Authentication getAuthenticationByAccessToken(String accessToken) {
+        try {
+            return jwtTokenProvider.getAuthentication(accessToken);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("올바른 토큰이 아닙니다.");
         }
     }
 }

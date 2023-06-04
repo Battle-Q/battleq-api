@@ -31,9 +31,15 @@ public class CommonExceptionHandler {
                 .body(new ErrorDto(message, request.getRequestURI(), request.getMethod()));
     }
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<?> illeaglArgumentException(IllegalArgumentException e, HttpServletRequest request) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorDto(e.getMessage(), request.getRequestURI(), request.getMethod()));
+    }
+
 
     @Getter
-    @AllArgsConstructor(access = AccessLevel.PROTECTED)
+    @AllArgsConstructor(access = AccessLevel.PRIVATE)
     private static class ErrorDto {
 
         private String message;

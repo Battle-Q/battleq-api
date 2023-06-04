@@ -11,14 +11,15 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 public class RedisRepository {
 
+    private static final String REFRESH_TOKEN_PREFIX = "REFRESH_TOKEN:";
     private final RedisTemplate<String, String> redisTemplate;
 
-    public Optional<String> findByUserId(Long userId) {
-        return Optional.ofNullable(redisTemplate.opsForValue().get(String.valueOf(userId)));
+    public Optional<String> findByUserId(String userId) {
+        return Optional.ofNullable(redisTemplate.opsForValue().get(REFRESH_TOKEN_PREFIX + userId));
     }
 
     public void save(String key, String value, Long timeout, TimeUnit unit) {
-        redisTemplate.opsForValue().set(key, value, timeout, unit);
+        redisTemplate.opsForValue().set(REFRESH_TOKEN_PREFIX + key, value, timeout, unit);
     }
 
 }
