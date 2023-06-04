@@ -5,6 +5,7 @@ import com.study.battleq.infrastructure.config.jwt.JwtTokenProvider;
 import com.study.battleq.modules.user.service.dto.TokenDto;
 import com.study.battleq.modules.user.service.exception.LoginFailedException;
 import com.study.battleq.modules.user.service.usecase.LoginUseCase;
+import com.study.battleq.modules.user.service.usecase.RefreshTokenUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class AuthService implements LoginUseCase {
+public class AuthService implements LoginUseCase, RefreshTokenUseCase {
 
     private final AuthenticationManagerService authenticationManagerService;
     private final JwtTokenProvider jwtTokenProvider;
@@ -29,5 +30,10 @@ public class AuthService implements LoginUseCase {
         } catch (AuthenticationException e) {
             throw LoginFailedException.thrown();
         }
+    }
+
+    @Override
+    public TokenDto refresh(String accessToken, String refreshToken) {
+        return null;
     }
 }
