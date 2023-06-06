@@ -3,7 +3,7 @@ package com.study.battleq.modules.user.service;
 import com.study.battleq.infrastructure.common.service.AuthenticationManagerService;
 import com.study.battleq.infrastructure.config.jwt.JwtTokenProvider;
 import com.study.battleq.infrastructure.config.properties.JwtProperties;
-import com.study.battleq.modules.user.domain.redis.RedisRepository;
+import com.study.battleq.modules.user.domain.redis.UserRedisRepository;
 import com.study.battleq.modules.user.service.dto.TokenDto;
 import com.study.battleq.modules.user.service.exception.LoginFailedException;
 import com.study.battleq.modules.user.service.exception.RefreshTokenExpiredException;
@@ -23,7 +23,7 @@ public class AuthService implements LoginUseCase, RefreshTokenUseCase {
     private final AuthenticationManagerService authenticationManagerService;
     private final JwtTokenProvider jwtTokenProvider;
     private final JwtProperties properties;
-    private final RedisRepository redisRepository;
+    private final UserRedisRepository userRedisRepository;
 
 
     @Override
@@ -35,7 +35,7 @@ public class AuthService implements LoginUseCase, RefreshTokenUseCase {
     }
 
     private void saveRefreshToken(String id, TokenDto tokenDto) {
-        redisRepository.save(id, tokenDto.getRefreshToken(),
+        userRedisRepository.save(id, tokenDto.getRefreshToken(),
                 properties.getRefreshTokenExpireTime(),
                 TimeUnit.MILLISECONDS);
     }
@@ -52,7 +52,7 @@ public class AuthService implements LoginUseCase, RefreshTokenUseCase {
     public TokenDto refresh(String accessToken, String refreshToken) {
         validateRefreshToken(refreshToken);
         Authentication authentication = getAuthenticationByAccessToken(accessToken);
-        String refreshTokenByRedis = redisRepository.findByUserId(authentication.getName()).orElseThrow(RefreshTokenExpiredException::thrown);
+        String refreshTokenByRedis = userRedisRepository.findByUserId(authentication.getName()).orElseThrow(RefreshTokenExpiredException::thrown);
         if (!refreshTokenByRedis.equals(refreshToken)) {
             throw new IllegalArgumentException("RefreshToken이 일치하지 않습니다.");
         }
