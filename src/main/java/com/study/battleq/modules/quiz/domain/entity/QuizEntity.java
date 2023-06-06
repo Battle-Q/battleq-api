@@ -1,6 +1,7 @@
 package com.study.battleq.modules.quiz.domain.entity;
 
 import com.study.battleq.infrastructure.common.entity.BaseEntity;
+import com.study.battleq.modules.quiz.domain.CreateQuizRequest;
 import lombok.*;
 
 import javax.persistence.*;

@@ -1,5 +1,7 @@
 package com.study.battleq.modules.quiz.service;
 
+import com.study.battleq.modules.quiz.domain.CreateQuizRequest;
+import com.study.battleq.modules.quiz.domain.CreateQuizResponse;
 import com.study.battleq.modules.quiz.domain.entity.QuizDto;
 import com.study.battleq.modules.quiz.domain.entity.QuizEntity;
 import com.study.battleq.modules.quiz.domain.entity.QuizType;
@@ -25,6 +27,28 @@ class QuizServiceTest {
 
     @Mock
     QuizRepository quizRepository;
+
+    @Test
+    @DisplayName("퀴즈를 정상 생성한다.")
+    void 퀴즈_생성() {
+
+        //todo Strict stubbing argument mismatch 해결하기
+
+        QuizEntity quiz = QuizEntity.of(QuizType.SHORT_ANSWER, "quiz data");
+        QuizEntity save = QuizEntity.of(QuizType.SHORT_ANSWER, "quiz data");
+
+        when(quizRepository.save(quiz)).thenReturn(save);
+
+
+        CreateQuizRequest createQuizRequest = CreateQuizRequest.of(QuizType.SHORT_ANSWER, "quiz data");
+        CreateQuizResponse response = quizService.createQuiz(createQuizRequest);
+
+
+        assertEquals(QuizType.SHORT_ANSWER, response.getQuizType());
+        assertEquals("quiz data", response.getQuizData());
+
+    }
+
 
 
     @Test
