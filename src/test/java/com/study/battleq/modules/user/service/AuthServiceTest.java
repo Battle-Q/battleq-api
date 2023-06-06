@@ -7,7 +7,6 @@ import com.study.battleq.modules.user.domain.redis.UserRedisRepository;
 import com.study.battleq.modules.user.service.dto.TokenDto;
 import com.study.battleq.modules.user.service.exception.LoginFailedException;
 import com.study.battleq.modules.user.service.exception.RefreshTokenExpiredException;
-import io.jsonwebtoken.UnsupportedJwtException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
