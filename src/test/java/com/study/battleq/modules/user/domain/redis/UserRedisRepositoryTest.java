@@ -24,9 +24,7 @@ class UserRedisRepositoryTest {
 
     @AfterEach
     void tearDown() {
-        redisTemplate.keys("*").stream().forEach(k -> {
-            redisTemplate.delete(k);
-        });
+        redisTemplate.keys("*").forEach(k -> redisTemplate.delete(k));
     }
 
     @Test
