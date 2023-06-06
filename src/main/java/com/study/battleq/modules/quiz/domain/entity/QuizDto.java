@@ -12,7 +12,7 @@ public class QuizDto {
 
     private QuizType quizType;
 
-    private Object quizData;
+    private String quizData;
 
 
 

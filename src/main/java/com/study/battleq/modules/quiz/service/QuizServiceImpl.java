@@ -14,7 +14,7 @@ public class QuizServiceImpl implements QuizService{
 
 
     @Override
-    public QuizDto getQuiz(String quizId) {
+    public QuizDto getQuiz(Long quizId) {
 
         // 삭제된거 고려
         // 트랜잭션 분리
