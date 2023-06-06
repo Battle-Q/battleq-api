@@ -50,7 +50,7 @@ public class AuthService implements LoginUseCase, RefreshTokenUseCase {
 
     @Override
     public TokenDto refresh(String accessToken, String refreshToken) {
-        validateRefreshToken(refreshToken);
+        jwtTokenProvider.isValidateToken(refreshToken);
         Authentication authentication = getAuthenticationByAccessToken(accessToken);
         String refreshTokenByRedis = userRedisRepository.findByUserId(authentication.getName()).orElseThrow(RefreshTokenExpiredException::thrown);
         if (!refreshTokenByRedis.equals(refreshToken)) {
@@ -59,12 +59,6 @@ public class AuthService implements LoginUseCase, RefreshTokenUseCase {
         TokenDto tokenDto = jwtTokenProvider.createToken(authentication);
         saveRefreshToken(authentication.getName(), tokenDto);
         return tokenDto;
-    }
-
-    private void validateRefreshToken(String refreshToken) {
-        if (!jwtTokenProvider.isValidateToken(refreshToken)) {
-            throw RefreshTokenExpiredException.thrown();
-        }
     }
 
     private Authentication getAuthenticationByAccessToken(String accessToken) {

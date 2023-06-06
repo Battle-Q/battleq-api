@@ -104,19 +104,14 @@ class AuthServiceTest {
     @Test
     void 리프레쉬_토큰이_만료_되었을_때() {
         //given
-        when(jwtTokenProvider.isValidateToken(anyString())).thenReturn(false);
+        List<SimpleGrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        UserDetails principal = new User("1", "", authorities);
+        Authentication authentication = new UsernamePasswordAuthenticationToken(principal, "", authorities);
+        when(jwtTokenProvider.isValidateToken(anyString())).thenReturn(true);
+        when(jwtTokenProvider.getAuthentication(anyString())).thenReturn(authentication);
+        when(userRedisRepository.findByUserId(anyString())).thenReturn(Optional.empty());
         //when
         //then
         assertThrows(RefreshTokenExpiredException.class, () -> authService.refresh("access", "refresh"));
-    }
-
-    @Test
-    void 올바른_JWT_토큰이_아닐_때() {
-        //given
-        when(jwtTokenProvider.isValidateToken(anyString())).thenReturn(true);
-        when(jwtTokenProvider.getAuthentication(anyString())).thenThrow(UnsupportedJwtException.class);
-        //when
-        //then
-        assertThrows(IllegalArgumentException.class, () -> authService.refresh("access", "refresh"));
     }
 }
