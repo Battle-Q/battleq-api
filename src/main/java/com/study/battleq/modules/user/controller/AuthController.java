@@ -87,13 +87,21 @@ public class AuthController {
                             responseCode = "401",
                             description = "요청 실패",
                             content = @Content(schema = @Schema(implementation = TokenDto.class),
-                                    examples = @ExampleObject(name = "로그인 실패", value = """
+                                    examples = {@ExampleObject(name = "리프레쉬 토큰 시간 만료", value = """
                                             {
-                                              "message": "로그아웃된 사용자입니다.",
+                                              "message": "토큰의 유효시간이 만료되었습니다.",
                                               "path": "/api/v1/auth/refresh",
                                               "method": "POST"
                                             }
-                                            """))
+                                            """),
+                                            @ExampleObject(name = "리프레쉬 토큰 불일가", value = """
+                                                    {
+                                                      "message": "RefreshToken이 일치하지 않습니다.",
+                                                      "path": "/api/v1/auth/refresh",
+                                                      "method": "POST"
+                                                    }
+                                                    """)
+                                    })
                     )
             }
     )
