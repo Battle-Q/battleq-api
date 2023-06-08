@@ -94,7 +94,7 @@ public class AuthController {
                                               "method": "POST"
                                             }
                                             """),
-                                            @ExampleObject(name = "리프레쉬 토큰 불일가", value = """
+                                            @ExampleObject(name = "리프레쉬 토큰 불일치", value = """
                                                     {
                                                       "message": "RefreshToken이 일치하지 않습니다.",
                                                       "path": "/api/v1/auth/refresh",
