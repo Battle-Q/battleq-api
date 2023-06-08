@@ -165,7 +165,7 @@ class AuthControllerTest {
     @Test
     void 리프레쉬_토큰이_만료_되었을_때() throws Exception {
         //given
-        UserEntity entity = userRepository.save(UserEntity.of(EMAIL, "테스트", passwordEncoder.encode(PASSWORD), "배틀큐", Authority.ROLE_STUDENT));
+        userRepository.save(UserEntity.of(EMAIL, "테스트", passwordEncoder.encode(PASSWORD), "배틀큐", Authority.ROLE_STUDENT));
         entityManager.clear();
         TokenDto tokenDto = authService.login(EMAIL, PASSWORD);
         redisTemplate.keys("REFRESH_TOKEN:" + EMAIL).forEach(k -> redisTemplate.delete(k));
