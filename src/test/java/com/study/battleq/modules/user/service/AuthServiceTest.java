@@ -76,7 +76,7 @@ class AuthServiceTest {
         Authentication authentication = new UsernamePasswordAuthenticationToken(principal, "", authorities);
         when(jwtTokenProvider.isValidateToken(anyString())).thenReturn(true);
         when(jwtTokenProvider.getAuthentication(anyString())).thenReturn(authentication);
-        when(userRedisRepository.findByUserId(anyString())).thenReturn(Optional.of("REFRESH_TOKEN"));
+        when(userRedisRepository.findByEmail(anyString())).thenReturn(Optional.of("REFRESH_TOKEN"));
         when(jwtTokenProvider.createToken(any())).thenReturn(TokenDto.of("a", "b"));
         //when
         TokenDto tokenDto = authService.refresh("access", "REFRESH_TOKEN");
@@ -94,7 +94,7 @@ class AuthServiceTest {
         Authentication authentication = new UsernamePasswordAuthenticationToken(principal, "", authorities);
         when(jwtTokenProvider.isValidateToken(anyString())).thenReturn(true);
         when(jwtTokenProvider.getAuthentication(anyString())).thenReturn(authentication);
-        when(userRedisRepository.findByUserId(anyString())).thenReturn(Optional.of("REFRESH_TOKEN"));
+        when(userRedisRepository.findByEmail(anyString())).thenReturn(Optional.of("REFRESH_TOKEN"));
         //when
         //then
         assertThrows(IllegalArgumentException.class, () -> authService.refresh("access", "REFRESH_TOKEN1"));
@@ -108,7 +108,7 @@ class AuthServiceTest {
         Authentication authentication = new UsernamePasswordAuthenticationToken(principal, "", authorities);
         when(jwtTokenProvider.isValidateToken(anyString())).thenReturn(true);
         when(jwtTokenProvider.getAuthentication(anyString())).thenReturn(authentication);
-        when(userRedisRepository.findByUserId(anyString())).thenReturn(Optional.empty());
+        when(userRedisRepository.findByEmail(anyString())).thenReturn(Optional.empty());
         //when
         //then
         assertThrows(RefreshTokenExpiredException.class, () -> authService.refresh("access", "refresh"));

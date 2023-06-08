@@ -1,6 +1,7 @@
 package com.study.battleq.modules.user.domain.redis;
 
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -31,7 +32,7 @@ class UserRedisRepositoryTest {
     void 조회_실패() {
         //given
         //when
-        Optional<String> result = userRedisRepository.findByUserId("1");
+        Optional<String> result = userRedisRepository.findByEmail("email");
         //then
         assertFalse(result.isPresent());
     }
@@ -39,9 +40,9 @@ class UserRedisRepositoryTest {
     @Test
     void 조회_성공() {
         //given
-        redisTemplate.opsForValue().set("REFRESH_TOKEN:1", "token");
+        redisTemplate.opsForValue().set("REFRESH_TOKEN:email", "token");
         //when
-        Optional<String> result = userRedisRepository.findByUserId("1");
+        Optional<String> result = userRedisRepository.findByEmail("email");
         //then
         assertTrue(result.isPresent());
     }
@@ -50,9 +51,9 @@ class UserRedisRepositoryTest {
     void 저장_성공() {
         //given
         //when
-        userRedisRepository.save("1", "token", 10000L, TimeUnit.MINUTES);
+        userRedisRepository.save("email", "token", 10000L, TimeUnit.MINUTES);
         //then
-        Optional<String> result = userRedisRepository.findByUserId("1");
+        Optional<String> result = userRedisRepository.findByEmail("email");
         assertTrue(result.isPresent());
         assertEquals("token", result.get());
     }

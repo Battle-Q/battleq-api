@@ -52,7 +52,7 @@ public class AuthService implements LoginUseCase, RefreshTokenUseCase {
     public TokenDto refresh(String accessToken, String refreshToken) {
         jwtTokenProvider.isValidateToken(refreshToken);
         Authentication authentication = getAuthenticationByAccessToken(accessToken);
-        String refreshTokenByRedis = userRedisRepository.findByUserId(authentication.getName()).orElseThrow(RefreshTokenExpiredException::thrown);
+        String refreshTokenByRedis = userRedisRepository.findByEmail(authentication.getName()).orElseThrow(RefreshTokenExpiredException::thrown);
         if (!refreshTokenByRedis.equals(refreshToken)) {
             throw new IllegalArgumentException("RefreshToken이 일치하지 않습니다.");
         }

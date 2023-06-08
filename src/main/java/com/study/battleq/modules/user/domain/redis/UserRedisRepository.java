@@ -14,7 +14,7 @@ public class UserRedisRepository {
     private static final String REFRESH_TOKEN_PREFIX = "REFRESH_TOKEN:";
     private final RedisTemplate<String, String> redisTemplate;
 
-    public Optional<String> findByUserId(String userId) {
+    public Optional<String> findByEmail(String userId) {
         return Optional.ofNullable(redisTemplate.opsForValue().get(REFRESH_TOKEN_PREFIX + userId));
     }
 
