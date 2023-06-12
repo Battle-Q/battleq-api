@@ -1,10 +1,12 @@
 package com.study.battleq.modules.board.controller;
 
-import com.study.battleq.board.domain.entity.BoardEntity;
-import com.study.battleq.board.repository.BoardRepository;
+import com.study.battleq.modules.board.domain.entity.BoardEntity;
+import com.study.battleq.modules.board.domain.repository.BoardRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledOnOs;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,7 +20,6 @@ import java.util.List;
 import static java.time.Duration.ofMinutes;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.condition.OS.MAC;
-import static org.junit.jupiter.api.condition.OS.WINDOWS;
 
 @SpringBootTest
 @ActiveProfiles("local")
@@ -42,8 +43,6 @@ public class BoardApiControllerTest {
     @Test
     @DisplayName("게시판 저장 성공 완료 테스트")
     void 게시판_저장_성공() throws Exception {
-        System.out.println("◼◼◼◼◼ BoardEntity Save Start... ◼◼◼◼◼ ︎");
-
         //given
         BoardEntity bookEntity = BoardEntity.builder()
                 .title(TITLE)
@@ -124,5 +123,24 @@ public class BoardApiControllerTest {
     @DisabledOnOs(value = MAC,disabledReason = "맥에서는 테스트하지 말아요.")
     void OS_테스트(){
 
+    }
+    
+    @ParameterizedTest
+    @ValueSource(ints = {0,101,Integer.MAX_VALUE})
+    void 파라미터_반복_테스트(int num) {
+        Shape shape = new Shape();
+        assertThrows(IllegalArgumentException.class,
+                () -> shape.cal(num));
+    }
+
+    private class Shape{
+        int param;
+
+        public void cal(int num) {
+            this.param = num;
+            if(num < 1 || num > 100){
+                throw new IllegalArgumentException("Exception...");
+            }
+        }
     }
 }

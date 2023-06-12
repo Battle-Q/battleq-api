@@ -1,4 +1,4 @@
-package com.study.battleq.board.domain.dto.response;
+package com.study.battleq.modules.board.controller.response;
 
 import lombok.*;
 import org.springframework.http.HttpStatus;

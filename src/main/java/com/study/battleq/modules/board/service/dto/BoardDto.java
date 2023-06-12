@@ -1,6 +1,6 @@
-package com.study.battleq.board.domain.dto;
+package com.study.battleq.modules.board.service.dto;
 
-import com.study.battleq.board.domain.entity.BoardEntity;
+import com.study.battleq.modules.board.domain.entity.BoardEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

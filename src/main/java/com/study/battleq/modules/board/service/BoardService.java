@@ -1,8 +1,9 @@
-package com.study.battleq.board.service;
+package com.study.battleq.modules.board.service;
 
-import com.study.battleq.board.domain.dto.BoardDto;
-import com.study.battleq.board.domain.entity.BoardEntity;
-import com.study.battleq.board.repository.BoardRepository;
+import com.study.battleq.infrastructure.config.jwt.JwtTokenProvider;
+import com.study.battleq.modules.board.service.dto.BoardDto;
+import com.study.battleq.modules.board.domain.entity.BoardEntity;
+import com.study.battleq.modules.board.domain.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -53,4 +54,6 @@ public class BoardService {
     public List<BoardEntity> findAll(){
         return boardRepository.findAll();
     }
+
+    // TODO 수정 삭제(softDelete)
 }

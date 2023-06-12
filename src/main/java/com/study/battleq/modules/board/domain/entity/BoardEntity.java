@@ -1,32 +1,35 @@
-package com.study.battleq.board.domain.entity;
+package com.study.battleq.modules.board.domain.entity;
 
 import com.study.battleq.infrastructure.common.entity.BaseEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
 import javax.persistence.Table;
-import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Getter
 @Table(name = "boards")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BoardEntity extends BaseEntity {
+    @Column(name = "title")
     private String title;
-
+    @Column(name = "content")
     private String content;
 
+    @Column(name = "category")
     private String category;
 
+    @Column(name = "priority")
     private boolean priority;
 
+    @Column(name = "writer")
     private String writer;
 
+    @Column(name = "view")
     private int view;
 
     @Builder
