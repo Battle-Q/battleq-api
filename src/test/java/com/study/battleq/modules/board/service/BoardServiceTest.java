@@ -1,17 +1,17 @@
-package com.study.battleq.modules.board.controller;
+package com.study.battleq.modules.board.service;
 
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class BoardApiControllerTest {
+class BoardServiceTest {
 
     @Test
-    void saveBoard() {
+    void save() {
     }
 
     @Test
-    void findAllBoard() {
+    void findAll() {
     }
 
     @Test
@@ -23,10 +23,10 @@ class BoardApiControllerTest {
     }
 
     @Test
-    void updateBoard() {
+    void update() {
     }
 
     @Test
-    void deleteBoard() {
+    void delete() {
     }
 }

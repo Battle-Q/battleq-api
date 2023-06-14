@@ -7,5 +7,5 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class BoardSearchRequest {
-    private String subject;
+    private String title;
 }

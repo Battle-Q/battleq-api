@@ -1,4 +1,4 @@
-package com.study.battleq.modules.board.controller.response;
+package com.study.battleq.modules.board.service.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

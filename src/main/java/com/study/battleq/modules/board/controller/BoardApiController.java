@@ -3,7 +3,7 @@ package com.study.battleq.modules.board.controller;
 import com.study.battleq.infrastructure.common.dto.ResponseDto;
 import com.study.battleq.modules.board.controller.request.DeleteSearchRequest;
 import com.study.battleq.modules.board.controller.request.UpdateBoardRequest;
-import com.study.battleq.modules.board.service.dto.BoardDto;
+import com.study.battleq.modules.board.service.dto.response.BoardSearchResponse;
 import com.study.battleq.modules.board.controller.request.CreateBoardRequest;
 import com.study.battleq.modules.board.service.BoardService;
 import com.study.battleq.modules.board.domain.entity.BoardEntity;
@@ -21,35 +21,36 @@ public class BoardApiController {
 
     @PostMapping("/api/v1/boards")
     public ResponseDto<Long> saveBoard(@RequestBody @Valid CreateBoardRequest request) {
-        BoardDto boardDto = request.toDto();
-        Long id = boardService.save(boardDto);
-
+        Long id = boardService.save(request.toDto());
         return ResponseDto.ok(id);
     }
 
     @GetMapping("/api/v1/boards")
     public ResponseDto<List> findAllBoard(){
-        // TODO 선후처리?
-        List<BoardEntity> boardEntities = boardService.findAll();
-        return ResponseDto.ok(boardEntities);
+        List<BoardSearchResponse> boardSearchResponseList = boardService.findAll();
+        return ResponseDto.ok(boardSearchResponseList);
     }
 
-    @GetMapping("/api/v1/boards/{title}")
+    @GetMapping("/api/v1/boards/{id}")
+    public ResponseDto<BoardSearchResponse> findById(@PathVariable("id") Long boardId){
+        BoardSearchResponse boardSearchResponse = boardService.findById(boardId);
+        return ResponseDto.ok(boardSearchResponse);
+    }
+
+    @GetMapping("/api/v1/boards/title/{title}")
     public ResponseDto<List> findByTitle(@PathVariable("title") String title){
-        List<BoardEntity> boardEntities = boardService.findByTitle(title);
-
-        return ResponseDto.ok(boardEntities);
+        List<BoardSearchResponse> boardSearchResponseList = boardService.findByTitle(title);
+        return ResponseDto.ok(boardSearchResponseList);
     }
 
-    //TODO 수정, 삭제(softDelete)
-    @PostMapping("/api/v1/boards/{id}")
+    @PostMapping("/api/v1/boards/update/{id}")
     public ResponseDto<Long> updateBoard(@PathVariable("id") Long boardId, @RequestBody @Valid UpdateBoardRequest request) {
-
-        return ResponseDto.ok();
+        Long id = boardService.update(boardId, request.toDto());
+        return ResponseDto.ok(id);
     }
-    @PostMapping("/api/v1/boards/{id}")
-    public ResponseDto<Long> deleteBoard(@PathVariable("id") Long boardId, @RequestBody @Valid DeleteSearchRequest request) {
-
+    @PostMapping("/api/v1/boards/delete/{id}")
+    public ResponseDto<Long> deleteBoard(@PathVariable("id") Long boardId) {
+        boardService.delete(boardId);
         return ResponseDto.ok();
     }
 }

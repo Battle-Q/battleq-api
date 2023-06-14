@@ -32,7 +32,6 @@ public class BoardEntity extends BaseEntity {
     @Column(name = "view")
     private int view;
 
-    @Builder
     private BoardEntity(String title, String content, String category, boolean priority, String writer) {
         this.title = title;
         this.content = content;
@@ -40,5 +39,15 @@ public class BoardEntity extends BaseEntity {
         this.priority = priority;
         this.writer = writer;
         this.view = 0;
+    }
+
+    public void updateBoard(String content, String category, boolean priority){
+        this.content = content;
+        this.category = category;
+        this.priority = priority;
+        // updatedAt
+    }
+    public static BoardEntity of(String title, String content, String category, boolean priority, String writer) {
+        return new BoardEntity(title, content, category, priority, writer);
     }
 }

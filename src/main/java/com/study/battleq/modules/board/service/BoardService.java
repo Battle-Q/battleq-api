@@ -1,14 +1,16 @@
 package com.study.battleq.modules.board.service;
 
-import com.study.battleq.infrastructure.config.jwt.JwtTokenProvider;
+import com.study.battleq.modules.board.service.dto.response.BoardSearchResponse;
 import com.study.battleq.modules.board.service.dto.BoardDto;
 import com.study.battleq.modules.board.domain.entity.BoardEntity;
 import com.study.battleq.modules.board.domain.repository.BoardRepository;
+import com.study.battleq.modules.board.service.exception.NotFoundBoardException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -16,44 +18,48 @@ public class BoardService {
     private final BoardRepository boardRepository;
 
     public Long save(BoardDto boardDto){
-        //임시 : toEntity()와 같은 DTO > Entity 편의 메서드 사용해도 되나?
-        BoardEntity boardEntity = BoardEntity.builder()
-                .title(boardDto.getTitle())
-                .content(boardDto.getContent())
-                .category(boardDto.getCategory())
-                .priority(boardDto.isPriority())
-                .writer(boardDto.getWriter())
-                .build();
+        BoardEntity boardEntity = boardRepository.save(BoardEntity.of(boardDto.getTitle(), boardDto.getContent(), boardDto.getCategory(), boardDto.isPriority(), boardDto.getWriter()));
+        return boardEntity.getId();
+    }
+    public List<BoardSearchResponse> findAll() {
+        List<BoardEntity> boardEntityList = boardRepository.findAllByDeletedAtIsNull();
 
-        boardEntity = boardRepository.save(boardEntity);
+        return boardEntityList.stream().map(boardEntity -> BoardSearchResponse.of(boardEntity.getTitle(), boardEntity.getContent(), boardEntity.getCategory(), boardEntity.isPriority(), boardEntity.getWriter(), boardEntity.getView()))
+                .collect(Collectors.toList());
+    }
+    public BoardSearchResponse findById(Long boardId) {
+        BoardEntity boardEntity = boardRepository.findByIdAndDeletedAtIsNull(boardId)
+                .orElseThrow(NotFoundBoardException::thrown);
+
+        return BoardSearchResponse.of(boardEntity.getTitle(), boardEntity.getContent(), boardEntity.getCategory(), boardEntity.isPriority(), boardEntity.getWriter(), boardEntity.getView());
+    }
+
+    public List<BoardSearchResponse> findByTitle(String title){
+        //TODO : 페이징 & Slice, 데이터가 존재하지 않을시 응답 방식 고려.
+        List<BoardEntity> boardEntityList = boardRepository.findByTitleAndDeletedAtIsNull(title);
+
+        return boardEntityList.stream().map(boardEntity -> BoardSearchResponse.of(boardEntity.getTitle(), boardEntity.getContent(), boardEntity.getCategory(), boardEntity.isPriority(), boardEntity.getWriter(), boardEntity.getView()))
+                .collect(Collectors.toList());
+    }
+
+    public Long update(Long boardId, BoardDto boardDto){
+        // TODO : 유저 및 권한검증
+
+        BoardEntity boardEntity = boardRepository.findByIdAndDeletedAtIsNull(boardId)
+                .orElseThrow(NotFoundBoardException::thrown);
+
+        boardEntity.updateBoard(boardDto.getContent(), boardDto.getCategory(), boardDto.isPriority());
+
         return boardEntity.getId();
     }
 
-    public BoardEntity findById(Long id) {
-        Optional<BoardEntity> boardEntity = boardRepository.findById(id);
+    public void delete(Long boardId){
+        // TODO : 유저 및 권한검증
 
-        /* 어떤게 좋은 코드인가? orElseThrow()로 선언하여 Exception 사용
-        BoardEntity board = boardRepository.findById(id).orElseThrow(() -> new Exception());
+        BoardEntity boardEntity = boardRepository.findByIdAndDeletedAtIsNull(boardId)
+                .orElseThrow(NotFoundBoardException::thrown);
 
-        if(!boardEntity.isPresent()){
-            new throws Exception();
-        }
-        */
-
-        return boardEntity.get();
+        // board softDelete
+        boardEntity.delete();
     }
-
-    // BoardDto로 받아야되나?
-    public List<BoardEntity> findByTitle(String title){
-        //TODO : 페이징 및 JPA Find 메서드 개선 필요
-        List<BoardEntity> boardEntityList = boardRepository.findByTitle(title);
-
-        return boardEntityList;
-    }
-
-    public List<BoardEntity> findAll(){
-        return boardRepository.findAll();
-    }
-
-    // TODO 수정 삭제(softDelete)
 }
