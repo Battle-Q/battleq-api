@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @AllArgsConstructor
-public class BoardSearchResponse<T> {
+public class BoardSearchResponse {
     private String title;
     private String content;
     private String category;

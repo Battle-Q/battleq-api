@@ -2,7 +2,7 @@ package com.study.battleq.modules.board.domain.repository;
 
 import com.study.battleq.modules.board.domain.entity.BoardEntity;
 import com.study.battleq.modules.board.service.BoardService;
-import com.study.battleq.modules.board.service.exception.NotFoundBoardException;
+import com.study.battleq.modules.board.service.exception.BoardNotFoundException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,6 +94,6 @@ class BoardRepositoryTest {
         entityManager.clear();
 
         //then
-        assertThrows(NotFoundBoardException.class, () -> boardService.findById(saveBoard.getId()));
+        assertThrows(BoardNotFoundException.class, () -> boardService.findById(saveBoard.getId()));
     }
 }

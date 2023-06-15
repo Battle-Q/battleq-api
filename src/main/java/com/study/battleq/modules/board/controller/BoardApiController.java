@@ -7,6 +7,7 @@ import com.study.battleq.modules.board.service.dto.response.BoardSearchResponse;
 import com.study.battleq.modules.board.controller.request.CreateBoardRequest;
 import com.study.battleq.modules.board.service.BoardService;
 import com.study.battleq.modules.board.domain.entity.BoardEntity;
+import com.study.battleq.modules.board.service.dto.response.UpdateBoardResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,8 +28,7 @@ public class BoardApiController {
 
     @GetMapping("/api/v1/boards")
     public ResponseDto<List> findAllBoard(){
-        List<BoardSearchResponse> boardSearchResponseList = boardService.findAll();
-        return ResponseDto.ok(boardSearchResponseList);
+        return ResponseDto.ok(boardService.findAll());
     }
 
     @GetMapping("/api/v1/boards/{id}")
@@ -43,12 +43,11 @@ public class BoardApiController {
         return ResponseDto.ok(boardSearchResponseList);
     }
 
-    @PostMapping("/api/v1/boards/update/{id}")
-    public ResponseDto<Long> updateBoard(@PathVariable("id") Long boardId, @RequestBody @Valid UpdateBoardRequest request) {
-        Long id = boardService.update(boardId, request.toDto());
-        return ResponseDto.ok(id);
+    @PutMapping("/api/v1/boards/{id}")
+    public ResponseDto<UpdateBoardResponse> updateBoard(@PathVariable("id") Long boardId, @RequestBody @Valid UpdateBoardRequest request) {
+        return ResponseDto.ok(boardService.update(boardId, request.toDto()));
     }
-    @PostMapping("/api/v1/boards/delete/{id}")
+    @DeleteMapping("/api/v1/boards/{id}")
     public ResponseDto<Long> deleteBoard(@PathVariable("id") Long boardId) {
         boardService.delete(boardId);
         return ResponseDto.ok();

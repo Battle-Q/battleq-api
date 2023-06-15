@@ -4,10 +4,11 @@ import com.study.battleq.modules.board.service.dto.response.BoardSearchResponse;
 import com.study.battleq.modules.board.service.dto.BoardDto;
 import com.study.battleq.modules.board.domain.entity.BoardEntity;
 import com.study.battleq.modules.board.domain.repository.BoardRepository;
-import com.study.battleq.modules.board.service.exception.NotFoundBoardException;
+import com.study.battleq.modules.board.service.dto.response.UpdateBoardResponse;
+import com.study.battleq.modules.board.service.exception.BoardNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,7 +30,7 @@ public class BoardService {
     }
     public BoardSearchResponse findById(Long boardId) {
         BoardEntity boardEntity = boardRepository.findByIdAndDeletedAtIsNull(boardId)
-                .orElseThrow(NotFoundBoardException::thrown);
+                .orElseThrow(BoardNotFoundException::thrown);
 
         return BoardSearchResponse.of(boardEntity.getTitle(), boardEntity.getContent(), boardEntity.getCategory(), boardEntity.isPriority(), boardEntity.getWriter(), boardEntity.getView());
     }
@@ -42,22 +43,24 @@ public class BoardService {
                 .collect(Collectors.toList());
     }
 
-    public Long update(Long boardId, BoardDto boardDto){
+    @Transactional
+    public UpdateBoardResponse update(Long boardId, BoardDto boardDto){
         // TODO : 유저 및 권한검증
 
         BoardEntity boardEntity = boardRepository.findByIdAndDeletedAtIsNull(boardId)
-                .orElseThrow(NotFoundBoardException::thrown);
+                .orElseThrow(BoardNotFoundException::thrown);
 
         boardEntity.updateBoard(boardDto.getContent(), boardDto.getCategory(), boardDto.isPriority());
 
-        return boardEntity.getId();
+        return UpdateBoardResponse.of(boardEntity.getId(), boardEntity.getTitle(), boardEntity.getContent(), boardEntity.getCategory(), boardEntity.isPriority(), boardEntity.getWriter(), boardEntity.getView(), boardEntity.getUpdatedAt());
     }
 
+    @Transactional
     public void delete(Long boardId){
         // TODO : 유저 및 권한검증
 
         BoardEntity boardEntity = boardRepository.findByIdAndDeletedAtIsNull(boardId)
-                .orElseThrow(NotFoundBoardException::thrown);
+                .orElseThrow(BoardNotFoundException::thrown);
 
         // board softDelete
         boardEntity.delete();

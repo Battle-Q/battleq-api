@@ -15,15 +15,12 @@ public class CreateBoardRequest {
     private String category;
     private boolean priority;
 
-    //private User user;
-
     public BoardDto toDto(){
         return BoardDto.builder()
                 .title(title)
                 .content(content)
                 .category(category)
                 .priority(priority)
-                //writer(User)
                 .view(0)
                 .build();
     }

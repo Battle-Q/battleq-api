@@ -18,16 +18,4 @@ public class BoardDto {
     private boolean priority;
     private String writer;
     private int view;
-
-    public BoardDto(BoardEntity boardEntity){
-        this.boardId = boardEntity.getId();
-        this.title = boardEntity.getTitle();
-        this.content = boardEntity.getContent();
-        this.category = boardEntity.getTitle();
-        this.priority = boardEntity.isPriority();
-        this.writer = boardEntity.getWriter();
-        this.view = boardEntity.getView();
-    }
-
-    //TODO : toEntity()
 }

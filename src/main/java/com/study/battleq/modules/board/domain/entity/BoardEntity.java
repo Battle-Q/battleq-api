@@ -45,7 +45,6 @@ public class BoardEntity extends BaseEntity {
         this.content = content;
         this.category = category;
         this.priority = priority;
-        // updatedAt
     }
     public static BoardEntity of(String title, String content, String category, boolean priority, String writer) {
         return new BoardEntity(title, content, category, priority, writer);
