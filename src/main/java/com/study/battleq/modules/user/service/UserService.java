@@ -23,6 +23,7 @@ public class UserService implements UserSignupUseCase {
     @Override
     public void signup(UserSignupCommand command) {
         validateAlreadySignup(command.getEmail());
+        validateNickname(command.getNickname());
         UserEntity entity = UserEntity.of(command.getEmail(), command.getName(), passwordEncoder.encode(command.getPassword()), command.getNickname(), Authority.ROLE_STUDENT);
         userCommandService.save(entity);
     }
@@ -30,6 +31,16 @@ public class UserService implements UserSignupUseCase {
     private void validateAlreadySignup(String email) {
         try {
             userQueryService.findByEmail(email);
+        } catch (UserNotFoundException e) {
+            return;
+        }
+
+        throw AlreadySignupException.thrown();
+    }
+
+    private void validateNickname(String nickname) {
+        try {
+            userQueryService.findByNickname(nickname);
         } catch (UserNotFoundException e) {
             return;
         }
