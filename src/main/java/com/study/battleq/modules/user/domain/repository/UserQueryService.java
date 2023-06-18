@@ -19,7 +19,7 @@ public class UserQueryService {
     }
 
     public UserEntity findByNickname(String nickname) {
-        return userRepository.findByNicknameAndDeletedAtIsNull(nickname).orElseThrow(UserNotFoundException::thrown);
+        return userRepository.findByNickname(nickname).orElseThrow(UserNotFoundException::thrown);
     }
 
 }
