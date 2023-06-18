@@ -6,8 +6,7 @@ import com.study.battleq.modules.user.domain.repository.UserCommandService;
 import com.study.battleq.modules.user.domain.repository.UserQueryService;
 import com.study.battleq.modules.user.domain.repository.exception.UserNotFoundException;
 import com.study.battleq.modules.user.service.dto.UserSignupCommand;
-import com.study.battleq.modules.user.service.exception.AlreadyUserSignupException;
-import com.study.battleq.modules.user.service.usecase.UserSignupUseCase;
+import com.study.battleq.modules.user.service.exception.AlreadySignupException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -38,13 +37,23 @@ class UserServiceTest {
         when(userQueryService.findByEmail(anyString())).thenReturn(UserEntity.of("email","name","password","nick", Authority.ROLE_STUDENT));
         //when
         //then
-        assertThrows(AlreadyUserSignupException.class, () -> userService.signup(UserSignupCommand.of("email", "name", "123", "nick")));
+        assertThrows(AlreadySignupException.class, () -> userService.signup(UserSignupCommand.of("email", "name", "123", "nick")));
+    }
+
+    @Test
+    void 닉네임_중복() {
+        //given
+        when(userQueryService.findByEmail(anyString())).thenReturn(UserEntity.of("email","name","password","nick", Authority.ROLE_STUDENT));
+        //when
+        //then
+        assertThrows(AlreadySignupException.class, () -> userService.signup(UserSignupCommand.of("email", "name", "123", "nick")));
     }
 
     @Test
     void 가입_성공() {
         //given
         when(userQueryService.findByEmail(anyString())).thenThrow(UserNotFoundException.class);
+        when(userQueryService.findByNickname(anyString())).thenThrow(UserNotFoundException.class);
         when(passwordEncoder.encode(anyString())).thenReturn("encodedPassword");
         //when
         userService.signup(UserSignupCommand.of("email", "name", "123", "nick"));
