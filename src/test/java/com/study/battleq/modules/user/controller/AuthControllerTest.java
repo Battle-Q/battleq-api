@@ -1,6 +1,7 @@
 package com.study.battleq.modules.user.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.study.battleq.infrastructure.config.jwt.JwtTokenProvider;
 import com.study.battleq.modules.user.controller.request.LoginRequest;
 import com.study.battleq.modules.user.controller.request.RefreshTokenRequest;
 import com.study.battleq.modules.user.domain.entity.Authority;
@@ -16,6 +17,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
@@ -53,6 +55,9 @@ class AuthControllerTest {
 
     @Autowired
     AuthService authService;
+
+    @Autowired
+    JwtTokenProvider jwtTokenProvider;
 
     @Autowired
     RedisTemplate<String, String> redisTemplate;
@@ -151,11 +156,12 @@ class AuthControllerTest {
         userRepository.save(UserEntity.of(EMAIL, "테스트", passwordEncoder.encode(PASSWORD), "배틀큐", Authority.ROLE_STUDENT));
         entityManager.clear();
         TokenDto tokenDto = authService.login(EMAIL, PASSWORD);
+        redisTemplate.opsForValue().set("REFRESH_TOKEN:" + EMAIL, "refresh");
         //when
         mockMvc.perform(post("/api/v1/auth/refresh")
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(new RefreshTokenRequest(tokenDto.getAccessToken(), "eyJhbGciOiJIUzUxMiJ9.eyJleHAiOjE2ODY2NTcyMzJ9.3Fw9Jg_mdqPHoDL_H2KF73k4Hp70NVffPWie8-EP5A-DHoJfh_jsYgmUv5jydMQSGuKD6Xeo_aA_sPjNJA0rkA"))))
+                        .content(objectMapper.writeValueAsString(new RefreshTokenRequest(tokenDto.getAccessToken(), tokenDto.getRefreshToken()))))
                 .andDo(print())
                 //then
                 .andExpect(status().isBadRequest())
