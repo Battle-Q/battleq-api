@@ -6,6 +6,7 @@ import com.study.battleq.modules.board.domain.entity.BoardEntity;
 import com.study.battleq.modules.board.domain.repository.BoardRepository;
 import com.study.battleq.modules.board.service.dto.response.UpdateBoardResponse;
 import com.study.battleq.modules.board.service.exception.BoardNotFoundException;
+import com.study.battleq.modules.user.domain.entity.BattleQUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,8 +19,8 @@ import java.util.stream.Collectors;
 public class BoardService {
     private final BoardRepository boardRepository;
 
-    public Long save(BoardDto boardDto){
-        BoardEntity boardEntity = boardRepository.save(BoardEntity.of(boardDto.getTitle(), boardDto.getContent(), boardDto.getCategory(), boardDto.isPriority(), boardDto.getWriter()));
+    public Long save(BoardDto boardDto, Long userId){
+        BoardEntity boardEntity = boardRepository.save(BoardEntity.of(boardDto.getTitle(), boardDto.getContent(), boardDto.getCategory(), boardDto.isPriority(), boardDto.getWriter(), userId));
         return boardEntity.getId();
     }
     public List<BoardSearchResponse> findAll() {
@@ -59,8 +60,7 @@ public class BoardService {
     public void delete(Long boardId){
         // TODO : 유저 및 권한검증
 
-        BoardEntity boardEntity = boardRepository.findByIdAndDeletedAtIsNull(boardId)
-                .orElseThrow(BoardNotFoundException::thrown);
+        BoardEntity boardEntity = boardRepository.findByIdAndDeletedAtIsNull(boardId).orElseThrow(BoardNotFoundException::thrown);
 
         // board softDelete
         boardEntity.delete();

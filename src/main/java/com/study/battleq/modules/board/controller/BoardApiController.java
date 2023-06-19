@@ -8,7 +8,9 @@ import com.study.battleq.modules.board.controller.request.CreateBoardRequest;
 import com.study.battleq.modules.board.service.BoardService;
 import com.study.battleq.modules.board.domain.entity.BoardEntity;
 import com.study.battleq.modules.board.service.dto.response.UpdateBoardResponse;
+import com.study.battleq.modules.user.domain.entity.BattleQUser;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -21,8 +23,8 @@ public class BoardApiController {
     private final BoardService boardService;
 
     @PostMapping("/api/v1/boards")
-    public ResponseDto<Long> saveBoard(@RequestBody @Valid CreateBoardRequest request) {
-        Long id = boardService.save(request.toDto());
+    public ResponseDto<Long> saveBoard(@RequestBody @Valid CreateBoardRequest request, @AuthenticationPrincipal BattleQUser battleQUser) {
+        Long id = boardService.save(request.toDto(), battleQUser.getId());
         return ResponseDto.ok(id);
     }
 
