@@ -7,6 +7,7 @@ import com.study.battleq.modules.user.domain.repository.UserQueryService;
 import com.study.battleq.modules.user.domain.repository.exception.UserNotFoundException;
 import com.study.battleq.modules.user.service.dto.UserSignupCommand;
 import com.study.battleq.modules.user.service.exception.AlreadySignupException;
+import com.study.battleq.modules.user.service.exception.AlreadyUsedNicknameException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -46,7 +47,7 @@ class UserServiceTest {
         when(userQueryService.findByEmail(anyString())).thenReturn(UserEntity.of("email","name","password","nick", Authority.ROLE_STUDENT));
         //when
         //then
-        assertThrows(AlreadySignupException.class, () -> userService.signup(UserSignupCommand.of("email", "name", "123", "nick")));
+        assertThrows(AlreadyUsedNicknameException.class, () -> userService.signup(UserSignupCommand.of("email", "name", "123", "nick")));
     }
 
     @Test

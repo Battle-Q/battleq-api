@@ -7,6 +7,7 @@ import com.study.battleq.modules.user.domain.repository.UserQueryService;
 import com.study.battleq.modules.user.domain.repository.exception.UserNotFoundException;
 import com.study.battleq.modules.user.service.dto.UserSignupCommand;
 import com.study.battleq.modules.user.service.exception.AlreadySignupException;
+import com.study.battleq.modules.user.service.exception.AlreadyUsedNicknameException;
 import com.study.battleq.modules.user.service.usecase.UserSignupUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -45,6 +46,6 @@ public class UserService implements UserSignupUseCase {
             return;
         }
 
-        throw AlreadySignupException.thrown();
+        throw AlreadyUsedNicknameException.thrown();
     }
 }
