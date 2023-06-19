@@ -18,14 +18,14 @@ public abstract class BaseEntity {
     private Long id;
 
     @CreatedDate
-    @Column(name = "created_at", updatable = false, columnDefinition = "datetime")
+    @Column(name = "created_at", columnDefinition = "datetime")
     private LocalDateTime createdAt;
 
     @LastModifiedDate
     @Column(name = "updated_at", columnDefinition = "datetime")
     private LocalDateTime updatedAt;
 
-    @Column(name = "deleted_at", updatable = false, columnDefinition = "datetime")
+    @Column(name = "deleted_at", columnDefinition = "datetime")
     private LocalDateTime deletedAt;
 
     public void delete() {
