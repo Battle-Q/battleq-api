@@ -1,7 +1,6 @@
-package com.study.battleq.modules.quiz.domain;
+package com.study.battleq.modules.quiz.domain.dto;
 
 
-import com.study.battleq.modules.quiz.domain.entity.QuizEntity;
 import com.study.battleq.modules.quiz.domain.entity.QuizType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
