@@ -1,13 +1,13 @@
 package com.study.battleq.modules.quiz.controller.v1;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.study.battleq.infrastructure.common.dto.ResponseDto;
-import com.study.battleq.modules.quiz.domain.CreateQuizRequest;
-import com.study.battleq.modules.quiz.domain.CreateQuizResponse;
+import com.study.battleq.modules.quiz.domain.dto.CreateQuizRequest;
 import com.study.battleq.modules.quiz.domain.entity.QuizDto;
 import com.study.battleq.modules.quiz.service.QuizService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,15 +18,18 @@ public class QuizControllerV1 {
 
     @GetMapping("/{quizId}")
     public ResponseDto<QuizDto> getQuiz(@PathVariable("quizId") Long quizId) {
-
         return ResponseDto.ok(quizService.getQuiz(quizId));
     }
 
 
     @PostMapping("")
-    public ResponseDto<CreateQuizResponse> createQuiz(@RequestBody CreateQuizRequest createQuizRequest ) {
+    public ResponseDto<Void> createQuiz(
+            //@AuthenticationPrincipal BattleQUser user,
+            @Valid @RequestBody CreateQuizRequest createQuizRequest) {
 
-        return ResponseDto.ok(quizService.createQuiz(createQuizRequest));
+        quizService.createQuiz(createQuizRequest);
+
+        return ResponseDto.ok();
     }
 
 }
