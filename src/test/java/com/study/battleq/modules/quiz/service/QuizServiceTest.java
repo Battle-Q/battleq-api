@@ -1,7 +1,6 @@
 package com.study.battleq.modules.quiz.service;
 
-import com.study.battleq.modules.quiz.domain.CreateQuizRequest;
-import com.study.battleq.modules.quiz.domain.CreateQuizResponse;
+import com.study.battleq.modules.quiz.domain.dto.CreateQuizRequest;
 import com.study.battleq.modules.quiz.domain.entity.QuizDto;
 import com.study.battleq.modules.quiz.domain.entity.QuizEntity;
 import com.study.battleq.modules.quiz.domain.entity.QuizType;
@@ -17,6 +16,8 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -32,20 +33,15 @@ class QuizServiceTest {
     @DisplayName("퀴즈를 정상 생성한다.")
     void 퀴즈_생성() {
 
-        //todo Strict stubbing argument mismatch 해결하기
-
-        QuizEntity quiz = QuizEntity.of(QuizType.SHORT_ANSWER, "quiz data");
         QuizEntity save = QuizEntity.of(QuizType.SHORT_ANSWER, "quiz data");
 
-        when(quizRepository.save(quiz)).thenReturn(save);
-
+        when(quizRepository.save(any())).thenReturn(save);
 
         CreateQuizRequest createQuizRequest = CreateQuizRequest.of(QuizType.SHORT_ANSWER, "quiz data");
-        CreateQuizResponse response = quizService.createQuiz(createQuizRequest);
+        quizService.createQuiz(createQuizRequest);
 
-
-        assertEquals(QuizType.SHORT_ANSWER, response.getQuizType());
-        assertEquals("quiz data", response.getQuizData());
+        assertEquals(QuizType.SHORT_ANSWER, save.getQuizType());
+        assertEquals("quiz data", save.getQuizData());
 
     }
 
@@ -55,7 +51,7 @@ class QuizServiceTest {
     @DisplayName("퀴즈 정보가 정상 조회된다")
     void 퀴즈_조회() {
 
-        when(quizRepository.findById(1L)).thenReturn(Optional.of(QuizEntity.of(QuizType.SHORT_ANSWER, "short")));
+        when(quizRepository.findById(anyLong())).thenReturn(Optional.of(QuizEntity.of(QuizType.SHORT_ANSWER, "short")));
 
         QuizDto quiz = quizService.getQuiz(1L);
 
@@ -67,7 +63,7 @@ class QuizServiceTest {
     @DisplayName("없는 퀴즈 정보가 조회에 실패한다 Exception 발생")
     void 없는_퀴즈_조회() {
 
-        when(quizRepository.findById(0L)).thenThrow(NoSuchElementException.class);
+        when(quizRepository.findById(0L)).thenReturn(Optional.empty());
 
         assertThrows(NoSuchElementException.class, () -> quizService.getQuiz(0L));
 

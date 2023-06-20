@@ -1,7 +1,6 @@
 package com.study.battleq.modules.quiz.service;
 
-import com.study.battleq.modules.quiz.domain.CreateQuizRequest;
-import com.study.battleq.modules.quiz.domain.CreateQuizResponse;
+import com.study.battleq.modules.quiz.domain.dto.CreateQuizRequest;
 import com.study.battleq.modules.quiz.domain.entity.QuizDto;
 import com.study.battleq.modules.quiz.domain.entity.QuizEntity;
 import com.study.battleq.modules.quiz.repository.QuizRepository;
@@ -10,18 +9,23 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class QuizServiceImpl implements QuizService{
+public class QuizServiceImpl implements QuizService {
 
     private final QuizRepository quizRepository;
 
 
     @Override
-    public CreateQuizResponse createQuiz(CreateQuizRequest createQuizRequest) {
+    public void createQuiz(CreateQuizRequest createQuizRequest) {
         QuizEntity quiz = QuizEntity.of(createQuizRequest.getQuizType(), createQuizRequest.getQuizData());
 
-        QuizEntity save = quizRepository.save(quiz);
+        try {
+            quizRepository.save(quiz);
 
-        return CreateQuizResponse.of(save.getQuizType(), save.getQuizData());
+        } catch (IllegalArgumentException e) {
+            //todo custom Exception 던지기
+            throw new IllegalArgumentException();
+        }
+
     }
 
 
