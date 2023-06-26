@@ -6,6 +6,7 @@ import com.study.battleq.modules.user.domain.entity.Authority;
 import com.study.battleq.modules.user.domain.entity.UserEntity;
 import com.study.battleq.modules.user.domain.repository.UserRepository;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -14,6 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.TestExecutionEvent;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -37,6 +41,12 @@ class UserControllerTest {
     @Autowired
     UserRepository userRepository;
 
+    @BeforeEach
+    void setUp() {
+      UserEntity userEntity = UserEntity.of("email", "이름", "pwd", "nick123", Authority.ROLE_STUDENT);
+      userRepository.save(userEntity);
+    }
+
     @AfterEach
     void tearDown() {
         userRepository.deleteAll();
@@ -45,8 +55,6 @@ class UserControllerTest {
     @Test
     void 이미_회원가입한_이메일() throws Exception {
         //given
-        UserEntity userEntity = UserEntity.of("email", "이름", "pwd", "nick123", Authority.ROLE_STUDENT);
-        userRepository.save(userEntity);
         //when
         mockMvc.perform(post("/api/v1/users")
                         .accept(MediaType.APPLICATION_JSON)
@@ -60,8 +68,6 @@ class UserControllerTest {
     @Test
     void 닉네임_중복() throws Exception {
         //given
-        UserEntity userEntity = UserEntity.of("email", "이름", "pwd", "nick123", Authority.ROLE_STUDENT);
-        userRepository.save(userEntity);
         //when
         mockMvc.perform(post("/api/v1/users")
                         .accept(MediaType.APPLICATION_JSON)
@@ -93,10 +99,22 @@ class UserControllerTest {
         mockMvc.perform(post("/api/v1/users")
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(new UserSignupRequest("email11", "이름", "pwd", "nick123"))))
+                        .content(objectMapper.writeValueAsString(new UserSignupRequest("email11", "이름", "pwd", "nick1234"))))
                 .andDo(print())
                 //then
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithUserDetails(value = "email",setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    void 탈퇴_성공() throws Exception {
+        //given
+        //when
+        mockMvc.perform(post("/api/v1/users/withdraw")
+                .accept(MediaType.APPLICATION_JSON))
+            .andDo(print())
+            //then
+            .andExpect(status().isOk());
     }
 
     private static Stream<Arguments> validationTestStubbing() {
