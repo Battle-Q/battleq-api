@@ -56,4 +56,26 @@ class UserQueryServiceTest {
         //then
         assertThrows(UserNotFoundException.class, ()-> userQueryService.findByEmail("email"));
     }
+
+    @Test
+    void 닉네임으로_조회_성공() {
+        //given
+        String email = "email@email.com";
+        String nickName = "nickName";
+        userRepository.save(UserEntity.of(email, "name", "pwd", nickName, Authority.ROLE_ADMIN));
+        entityManager.clear();
+        //when
+        UserEntity entity = userQueryService.findByNickname(nickName);
+        //then
+        assertEquals("name", entity.getName());
+        assertEquals(nickName, entity.getNickname());
+    }
+
+    @Test
+    void 존재하지_않는_닉네임() {
+        //given
+        //when
+        //then
+        assertThrows(UserNotFoundException.class, () -> userQueryService.findByNickname("nick123"));
+    }
 }

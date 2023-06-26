@@ -34,8 +34,8 @@ public class AuthService implements LoginUseCase, RefreshTokenUseCase {
         return tokenDto;
     }
 
-    private void saveRefreshToken(String id, TokenDto tokenDto) {
-        userRedisRepository.save(id, tokenDto.getRefreshToken(),
+    private void saveRefreshToken(String email, TokenDto tokenDto) {
+        userRedisRepository.save(email, tokenDto.getRefreshToken(),
                 properties.getRefreshTokenExpireTime(),
                 TimeUnit.MILLISECONDS);
     }
