@@ -1,13 +1,11 @@
 package com.study.battleq.modules.board.service;
 
-import com.study.battleq.modules.board.domain.projection.BoardSummaryList;
-import com.study.battleq.modules.board.service.dto.response.BoardSearchResponse;
-import com.study.battleq.modules.board.service.dto.BoardDto;
 import com.study.battleq.modules.board.domain.entity.BoardEntity;
 import com.study.battleq.modules.board.domain.repository.BoardRepository;
+import com.study.battleq.modules.board.service.dto.BoardDto;
+import com.study.battleq.modules.board.service.dto.response.BoardSearchResponse;
 import com.study.battleq.modules.board.service.dto.response.UpdateBoardResponse;
 import com.study.battleq.modules.board.service.exception.BoardNotFoundException;
-import com.study.battleq.modules.user.domain.entity.BattleQUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,14 +37,10 @@ public class BoardService {
 
     public List<BoardSearchResponse> findByTitle(String title){
         //TODO : 페이징 & Slice, 데이터가 존재하지 않을시 응답 방식 고려.
-        List<BoardSummaryList> boardSummaryList = boardRepository.findGenericProjectionsByTitle(title, BoardSummaryList.class);
+        List<BoardEntity> boardEntityList = boardRepository.findAllByDeletedAtIsNull();
 
-        for(BoardSummaryList b : boardSummaryList){
-            System.out.println("b.toString() = " + b.toString());
-        }
-        /*return boardEntityList.stream().map(boardEntity -> BoardSearchResponse.of(boardEntity.getTitle(), boardEntity.getContent(), boardEntity.getCategory(), "", boardEntity.getView()))
-                .collect(Collectors.toList());*/
-        return null;
+        return boardEntityList.stream().map(boardEntity -> BoardSearchResponse.of(boardEntity.getTitle(), boardEntity.getContent(), boardEntity.getCategory(), "", boardEntity.getView()))
+                .collect(Collectors.toList());
     }
 
     @Transactional

@@ -11,13 +11,11 @@ import javax.validation.constraints.NotEmpty;
 public class UpdateBoardRequest {
     private String content;
     private String category;
-    private boolean priority;
 
     public BoardDto toDto(){
         return BoardDto.builder()
                 .content(content)
                 .category(category)
-                .priority(priority)
                 .build();
     }
 }
