@@ -14,7 +14,8 @@ public class CreateBoardRequest {
     private String content;
     private String category;
     private boolean priority;
-
+    // TODO : remove
+    private Long id;
     public BoardDto toDto(){
         return BoardDto.builder()
                 .title(title)

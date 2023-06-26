@@ -1,56 +1,55 @@
 package com.study.battleq.modules.board.domain.entity;
 
 import com.study.battleq.infrastructure.common.entity.BaseEntity;
+import com.study.battleq.modules.user.domain.entity.UserEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Getter
 @Table(name = "boards")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BoardEntity extends BaseEntity {
-    @Column(name = "title")
+    @Column(name = "title", nullable = false)
     private String title;
-    @Column(name = "content")
+    @Column(name = "content", nullable = false)
     private String content;
 
-    @Column(name = "category")
+    @Column(name = "category", nullable = false)
     private String category;
 
-    @Column(name = "priority")
-    private boolean priority;
-
-    @Column(name = "writer")
-    private String writer;
+    @Column(name = "userId", nullable = false)
+    private Long userId;
 
     @Column(name = "view")
     private int view;
 
-    @Column(name = "userId")
-    private Long userId;
+    @Column(name = "up")
+    private int like;
 
-    private BoardEntity(String title, String content, String category, boolean priority, String writer, Long userId) {
+    @Column(name = "down")
+    private int dislike;
+
+    @Column(name = "best")
+    private boolean isBest;
+
+    private BoardEntity(String title, String content, String category, Long userId) {
         this.title = title;
         this.content = content;
         this.category = category;
-        this.priority = priority;
-        this.writer = writer;
-        this.view = 0;
         this.userId = userId;
     }
 
-    public void updateBoard(String content, String category, boolean priority){
+    public void updateBoard(String content, String category) {
         this.content = content;
         this.category = category;
-        this.priority = priority;
     }
-    public static BoardEntity of(String title, String content, String category, boolean priority, String writer, Long userId) {
-        return new BoardEntity(title, content, category, priority, writer, userId);
+
+    public static BoardEntity of(String title, String content, String category, Long userId) {
+        return new BoardEntity(title, content, category, userId);
     }
 }

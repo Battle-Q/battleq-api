@@ -1,5 +1,6 @@
 package com.study.battleq.modules.board.service;
 
+import com.study.battleq.modules.board.domain.projection.BoardSummaryList;
 import com.study.battleq.modules.board.service.dto.response.BoardSearchResponse;
 import com.study.battleq.modules.board.service.dto.BoardDto;
 import com.study.battleq.modules.board.domain.entity.BoardEntity;
@@ -20,28 +21,32 @@ public class BoardService {
     private final BoardRepository boardRepository;
 
     public Long save(BoardDto boardDto, Long userId){
-        BoardEntity boardEntity = boardRepository.save(BoardEntity.of(boardDto.getTitle(), boardDto.getContent(), boardDto.getCategory(), boardDto.isPriority(), boardDto.getWriter(), userId));
+        BoardEntity boardEntity = boardRepository.save(BoardEntity.of(boardDto.getTitle(), boardDto.getContent(), boardDto.getCategory(), userId));
         return boardEntity.getId();
     }
     public List<BoardSearchResponse> findAll() {
         List<BoardEntity> boardEntityList = boardRepository.findAllByDeletedAtIsNull();
 
-        return boardEntityList.stream().map(boardEntity -> BoardSearchResponse.of(boardEntity.getTitle(), boardEntity.getContent(), boardEntity.getCategory(), boardEntity.isPriority(), boardEntity.getWriter(), boardEntity.getView()))
+        return boardEntityList.stream().map(boardEntity -> BoardSearchResponse.of(boardEntity.getTitle(), boardEntity.getContent(), boardEntity.getCategory(), "user", 0))
                 .collect(Collectors.toList());
     }
     public BoardSearchResponse findById(Long boardId) {
         BoardEntity boardEntity = boardRepository.findByIdAndDeletedAtIsNull(boardId)
                 .orElseThrow(BoardNotFoundException::thrown);
 
-        return BoardSearchResponse.of(boardEntity.getTitle(), boardEntity.getContent(), boardEntity.getCategory(), boardEntity.isPriority(), boardEntity.getWriter(), boardEntity.getView());
+        return BoardSearchResponse.of(boardEntity.getTitle(), boardEntity.getContent(), boardEntity.getCategory(),  "user", 0);
     }
 
     public List<BoardSearchResponse> findByTitle(String title){
         //TODO : 페이징 & Slice, 데이터가 존재하지 않을시 응답 방식 고려.
-        List<BoardEntity> boardEntityList = boardRepository.findByTitleAndDeletedAtIsNull(title);
+        List<BoardSummaryList> boardSummaryList = boardRepository.findGenericProjectionsByTitle(title, BoardSummaryList.class);
 
-        return boardEntityList.stream().map(boardEntity -> BoardSearchResponse.of(boardEntity.getTitle(), boardEntity.getContent(), boardEntity.getCategory(), boardEntity.isPriority(), boardEntity.getWriter(), boardEntity.getView()))
-                .collect(Collectors.toList());
+        for(BoardSummaryList b : boardSummaryList){
+            System.out.println("b.toString() = " + b.toString());
+        }
+        /*return boardEntityList.stream().map(boardEntity -> BoardSearchResponse.of(boardEntity.getTitle(), boardEntity.getContent(), boardEntity.getCategory(), "", boardEntity.getView()))
+                .collect(Collectors.toList());*/
+        return null;
     }
 
     @Transactional
@@ -51,9 +56,9 @@ public class BoardService {
         BoardEntity boardEntity = boardRepository.findByIdAndDeletedAtIsNull(boardId)
                 .orElseThrow(BoardNotFoundException::thrown);
 
-        boardEntity.updateBoard(boardDto.getContent(), boardDto.getCategory(), boardDto.isPriority());
+        boardEntity.updateBoard(boardDto.getContent(), boardDto.getCategory());
 
-        return UpdateBoardResponse.of(boardEntity.getId(), boardEntity.getTitle(), boardEntity.getContent(), boardEntity.getCategory(), boardEntity.isPriority(), boardEntity.getWriter(), boardEntity.getView(), boardEntity.getUpdatedAt());
+        return UpdateBoardResponse.of(boardEntity.getId(), boardEntity.getTitle(), boardEntity.getContent(), boardEntity.getCategory(),"user" , boardEntity.getView(), boardEntity.getUpdatedAt());
     }
 
     @Transactional
