@@ -8,6 +8,7 @@ import com.study.battleq.modules.user.service.dto.UserSignupCommand;
 import com.study.battleq.modules.user.service.usecase.UserSignupUseCase;
 import com.study.battleq.modules.user.service.usecase.UserWithdrawUseCase;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -100,7 +101,7 @@ public class UserController {
       }
   )
   @PostMapping("/withdraw")
-  public ResponseDto<Void> withdraw(@AuthenticationPrincipal BattleQUser battleQUser) {
+  public ResponseDto<Void> withdraw(@Parameter(hidden = true) @AuthenticationPrincipal BattleQUser battleQUser) {
     userWithdrawUseCase.withdraw(battleQUser.getId());
     return ResponseDto.ok();
   }
