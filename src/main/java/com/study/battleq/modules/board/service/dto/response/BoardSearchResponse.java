@@ -9,13 +9,18 @@ import java.time.LocalDateTime;
 @Getter
 @AllArgsConstructor
 public class BoardSearchResponse {
+    private Long id;
     private String title;
     private String content;
     private String category;
-    private String writer;
-    private int view;
+    private String userNickname;
+    private int views;
+    private int likeCount;
+    private int dislikeCount;
+    private boolean isBest;
+    // private boolean isRecent;
 
-    public static BoardSearchResponse of(String title, String content, String category, String writer, int view) {
-        return new BoardSearchResponse(title, content, category, writer, view);
+    public static BoardSearchResponse of(Long id, String title, String content, String category, String userNickname, int views, int likeCount, int dislikeCount, boolean isBest) {
+        return new BoardSearchResponse(id, title, content, category, userNickname, views, likeCount, dislikeCount, isBest);
     }
 }

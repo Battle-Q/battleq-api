@@ -14,6 +14,9 @@ public class UserQueryService {
 
     private final UserRepository userRepository;
 
+    public UserEntity findById(Long id){
+        return userRepository.findByIdAndDeletedAtIsNull(id).orElseThrow(UserNotFoundException::thrown);
+    }
     public UserEntity findByEmail(String email) {
         return userRepository.findByEmailAndDeletedAtIsNull(email).orElseThrow(UserNotFoundException::thrown);
     }

@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -23,9 +24,8 @@ public class BoardApiController {
     private final BoardService boardService;
 
     @PostMapping("/api/v1/boards")
-    public ResponseDto<Long> saveBoard(@RequestBody @Valid CreateBoardRequest request, @Parameter(hidden = true) @AuthenticationPrincipal UserDetails battleQUser) {
-        // @AuthenticationPrincipal 관련 개선 필요.
-        Long id = boardService.save(request.toDto(), 1L);
+    public ResponseDto<Long> saveBoard(@RequestBody @Valid CreateBoardRequest request, @Parameter(hidden = true) @AuthenticationPrincipal BattleQUser battleQUser) {
+        Long id = boardService.save(request.toDto(), battleQUser.getId());
         return ResponseDto.ok(id);
     }
 
@@ -48,12 +48,12 @@ public class BoardApiController {
 
     @PutMapping("/api/v1/boards/{id}")
     public ResponseDto<UpdateBoardResponse> updateBoard(@PathVariable("id") Long boardId, @RequestBody @Valid UpdateBoardRequest request, @Parameter(hidden = true) @AuthenticationPrincipal BattleQUser battleQUser) {
-        return ResponseDto.ok(boardService.update(boardId, request.toDto()));
+        return ResponseDto.ok(boardService.update(boardId, request.toDto(), battleQUser.getId()));
     }
 
     @DeleteMapping("/api/v1/boards/{id}")
     public ResponseDto<Long> deleteBoard(@PathVariable("id") Long boardId, @Parameter(hidden = true) @AuthenticationPrincipal BattleQUser battleQUser) {
-        boardService.delete(boardId);
+        boardService.delete(boardId, battleQUser.getId());
         return ResponseDto.ok();
     }
 }
