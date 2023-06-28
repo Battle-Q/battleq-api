@@ -1,6 +1,8 @@
 package com.study.battleq.infrastructure.config.jwt;
 
 import com.study.battleq.infrastructure.config.properties.JwtProperties;
+import com.study.battleq.modules.user.domain.repository.exception.UserNotFoundException;
+import com.study.battleq.modules.user.service.CustomUserDetailsService;
 import com.study.battleq.modules.user.service.dto.TokenDto;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -11,6 +13,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
@@ -26,11 +29,13 @@ public class JwtTokenProvider {
     private final long accessTokenExpireTime;
     private final long refreshTokenExpireTime;
     private Key key;
+    private final CustomUserDetailsService customUserDetailsService;
 
-    public JwtTokenProvider(JwtProperties jwtProperties) {
+    public JwtTokenProvider(JwtProperties jwtProperties, CustomUserDetailsService customUserDetailsService) {
         this.accessTokenExpireTime = jwtProperties.getAccessTokenExpireTime() * 1000;
         this.refreshTokenExpireTime = jwtProperties.getRefreshTokenExpireTime() * 1000;
         this.key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtProperties.getSecret()));
+        this.customUserDetailsService = customUserDetailsService;
     }
 
     public TokenDto createToken(Authentication authentication) {
@@ -79,8 +84,13 @@ public class JwtTokenProvider {
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
 
-        UserDetails principal = new User(claims.getSubject(), "", authorities);
-        return new UsernamePasswordAuthenticationToken(principal, "", authorities);
+        UserDetails userDetails;
+        try {
+            userDetails = customUserDetailsService.loadUserByUsername(claims.getSubject());
+        } catch (UsernameNotFoundException exception) {
+            throw UserNotFoundException.thrown();
+        }
+        return new UsernamePasswordAuthenticationToken(userDetails, "", authorities);
     }
 
     private Claims parseClaims(String accessToken) {

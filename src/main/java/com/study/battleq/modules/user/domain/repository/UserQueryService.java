@@ -14,15 +14,19 @@ public class UserQueryService {
 
     private final UserRepository userRepository;
 
-    public UserEntity findById(Long id){
-        return userRepository.findByIdAndDeletedAtIsNull(id).orElseThrow(UserNotFoundException::thrown);
-    }
     public UserEntity findByEmail(String email) {
         return userRepository.findByEmailAndDeletedAtIsNull(email).orElseThrow(UserNotFoundException::thrown);
     }
 
-    public UserEntity findByNickname(String nickname) {
-        return userRepository.findByNickname(nickname).orElseThrow(UserNotFoundException::thrown);
+    public boolean hasDuplicateEmail(String email) {
+        return userRepository.existsByEmail(email);
     }
 
+    public boolean hasDuplicateNickname(String nickname) {
+        return userRepository.existsByNickname(nickname);
+    }
+
+    public UserEntity findById(Long id) {
+        return userRepository.findByIdAndDeletedAtIsNull(id).orElseThrow(UserNotFoundException::thrown);
+    }
 }

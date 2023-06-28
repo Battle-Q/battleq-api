@@ -47,4 +47,8 @@ public class UserEntity extends BaseEntity {
     public static UserEntity of(String email, String name, String password, String nickname, Authority authority) {
         return new UserEntity(email, name, password, nickname, authority);
     }
+
+    public void withdraw() {
+        delete();
+    }
 }
