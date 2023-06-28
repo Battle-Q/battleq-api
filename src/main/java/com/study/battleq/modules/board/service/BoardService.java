@@ -32,7 +32,7 @@ public class BoardService {
     }
 
     public List<BoardSearchResponse> findAll() {
-        // TODO : 페이징 처리
+        //TODO : 페이징 & Slice
         List<BoardEntity> boardEntityList = boardRepository.findAllByDeletedAtIsNull();
 
         return boardEntityList.stream().map(boardEntity -> BoardSearchResponse.of(boardEntity.getId(), boardEntity.getTitle(), boardEntity.getContent(), boardEntity.getCategory(), boardEntity.getUser().getNickname(), boardEntity.getViews(), boardEntity.getLikeCount(), boardEntity.getDislikeCount(), boardEntity.isBest()))
@@ -46,7 +46,7 @@ public class BoardService {
     }
 
     public List<BoardSearchResponse> findByTitle(String title) {
-        // TODO : 페이징 처리
+        //TODO : 페이징 & Slice, 데이터가 존재하지 않을시 응답 방식 고려.
         List<BoardEntity> boardEntityList = boardRepository.findByTitleAndDeletedAtIsNull(title);
 
         return boardEntityList.stream().map(boardEntity -> BoardSearchResponse.of(boardEntity.getId(), boardEntity.getTitle(), boardEntity.getContent(), boardEntity.getCategory(), boardEntity.getUser().getNickname(), boardEntity.getViews(), boardEntity.getLikeCount(), boardEntity.getDislikeCount(), boardEntity.isBest()))
@@ -58,8 +58,8 @@ public class BoardService {
         BoardEntity boardEntity = boardRepository.findByIdAndDeletedAtIsNull(boardId).orElseThrow(BoardNotFoundException::thrown);
 
         // 사용자 권한 검증
-        if(boardEntity.getUser().getId() != userId){
-            BoardAuthorizationException.thrown();
+        if(!boardEntity.getUser().getId().equals(userId)){
+            throw BoardAuthorizationException.thrown();
         }
 
         boardEntity.updateBoard(boardDto.getContent(), boardDto.getCategory());
@@ -72,8 +72,8 @@ public class BoardService {
         BoardEntity boardEntity = boardRepository.findByIdAndDeletedAtIsNull(boardId).orElseThrow(BoardNotFoundException::thrown);
 
         // 사용자 권한 검증
-        if(boardEntity.getUser().getId() != userId){
-            BoardAuthorizationException.thrown();
+        if(!boardEntity.getUser().getId().equals(userId)){
+            throw BoardAuthorizationException.thrown();
         }
 
         boardEntity.delete();
