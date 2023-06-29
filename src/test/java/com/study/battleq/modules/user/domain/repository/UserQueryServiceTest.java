@@ -14,7 +14,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @ActiveProfiles("local")
@@ -55,5 +58,62 @@ class UserQueryServiceTest {
         //when
         //then
         assertThrows(UserNotFoundException.class, ()-> userQueryService.findByEmail("email"));
+    }
+
+    @Test
+    void 이메일_중복_확인() {
+        //given
+        String email = "email@email.com";
+        userRepository.save(UserEntity.of(email, "name", "pwd", "nickName", Authority.ROLE_ADMIN));
+        entityManager.clear();
+        //when
+        //then
+        assertTrue(userQueryService.hasDuplicateEmail(email));
+    }
+
+    @Test
+    void 이메일_중복이_아닐_때_false() {
+        //given
+        //when
+        //then
+        assertFalse(userQueryService.hasDuplicateEmail("email"));
+    }
+
+    @Test
+    void 닉네임_중복() {
+        //given
+        String email = "email@email.com";
+        String nickName = "nickName";
+        userRepository.save(UserEntity.of(email, "name", "pwd", nickName, Authority.ROLE_ADMIN));
+        entityManager.clear();
+        //when
+        //then
+        assertTrue(userQueryService.hasDuplicateNickname(nickName));
+    }
+
+    @Test
+    void 존재하지_않는_닉네임() {
+        //given
+        //when
+        //then
+        assertFalse(userQueryService.hasDuplicateNickname("nick123"));
+    }
+
+    @Test
+    void id로_조회() {
+        //given
+        Long id = userRepository.save(UserEntity.of("email", "name", "pwd", "nickName", Authority.ROLE_ADMIN)).getId();
+        //when
+        UserEntity entity = userQueryService.findById(id);
+        //then
+        assertNotNull(entity);
+    }
+
+    @Test
+    void id로_조회_실패() {
+        //given
+        //when
+        //then
+        assertThrows(UserNotFoundException.class, () -> userQueryService.findById(123123L));
     }
 }

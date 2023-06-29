@@ -7,6 +7,7 @@ import com.study.battleq.infrastructure.config.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -22,6 +23,7 @@ import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true, jsr250Enabled = true)
 @RequiredArgsConstructor
 public class SecurityConfiguration {
 
@@ -58,6 +60,7 @@ public class SecurityConfiguration {
                 .antMatchers("/webjars/**").anonymous()
                 .antMatchers("/swagger/**").permitAll()
                 .antMatchers("/swagger-ui/**").permitAll()
+                .antMatchers("/api/v1/users/withdraw").authenticated()
                 .anyRequest().permitAll()
                 .and()
                 .exceptionHandling()
