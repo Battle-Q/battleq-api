@@ -7,4 +7,6 @@ public interface QuizService {
     QuizDto getQuiz(Long quizId);
 
     void createQuiz(CreateQuizRequest createQuizRequest);
+
+    void deleteQuiz(Long quizId);
 }

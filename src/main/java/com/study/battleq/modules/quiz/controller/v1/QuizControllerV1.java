@@ -32,4 +32,10 @@ public class QuizControllerV1 {
         return ResponseDto.ok();
     }
 
+    @DeleteMapping("/{quizId}")
+    public ResponseDto<Void> deleteQuiz(@PathVariable("quizId") Long quizId) {
+        quizService.deleteQuiz(quizId);
+        return ResponseDto.ok();
+    }
+
 }

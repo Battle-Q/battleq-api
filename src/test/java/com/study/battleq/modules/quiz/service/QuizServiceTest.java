@@ -11,6 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.stubbing.OngoingStubbing;
 
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -18,7 +19,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class QuizServiceTest {
@@ -46,7 +47,6 @@ class QuizServiceTest {
     }
 
 
-
     @Test
     @DisplayName("퀴즈 정보가 정상 조회된다")
     void 퀴즈_조회() {
@@ -66,6 +66,32 @@ class QuizServiceTest {
         when(quizRepository.findById(0L)).thenReturn(Optional.empty());
 
         assertThrows(NoSuchElementException.class, () -> quizService.getQuiz(0L));
+
+    }
+
+    @Test
+    @DisplayName("퀴즈를 정상적으로 삭제한다")
+    void 퀴즈_삭제() {
+
+        //삭제된 객체를 어떻게 확인하지?
+        //void 테스트는 어떻게하나?
+//         service 단에서 repository mock 객체를 사용했을 때 삭제 테스트는 없는거 같다
+        quizService.deleteQuiz(anyLong());
+
+        verify(quizRepository, times(1)).deleteById(anyLong());
+
+    }
+
+
+    @Test
+    @DisplayName("없는 퀴즈ID로 퀴즈를 삭제할때는 에러를 반환한다")
+    void 없는_퀴즈_삭제() {
+
+        //어떻게 테스트를 해야하나
+
+//        when(quizService.deleteQuiz(anyLong())).
+
+//        assertThrows(IllegalArgumentException.class, () -> quizService.deleteQuiz(0L));
 
     }
 }
