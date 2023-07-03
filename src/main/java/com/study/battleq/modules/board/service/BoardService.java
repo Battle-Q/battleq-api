@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.beans.PropertyEditorSupport;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,7 +27,7 @@ public class BoardService {
     public Long save(BoardDto boardDto, Long userId) {
         UserEntity userEntity = userQueryService.findById(userId);
 
-        BoardEntity boardEntity = boardRepository.save(BoardEntity.of(boardDto.getTitle(), boardDto.getContent(), boardDto.getCategory(), userEntity));
+        BoardEntity boardEntity = boardRepository.save(BoardEntity.createBoardEntity(boardDto.getTitle(), boardDto.getContent(), boardDto.getCategory(), userEntity));
 
         return boardEntity.getId();
     }
@@ -58,7 +59,7 @@ public class BoardService {
         BoardEntity boardEntity = boardRepository.findByIdAndDeletedAtIsNull(boardId).orElseThrow(BoardNotFoundException::thrown);
 
         // 사용자 권한 검증
-        if(!boardEntity.getUser().getId().equals(userId)){
+        if(!verifyBoardUserPermissions(boardEntity.getUser(), userId)){
             throw BoardAuthorizationException.thrown();
         }
 
@@ -72,10 +73,17 @@ public class BoardService {
         BoardEntity boardEntity = boardRepository.findByIdAndDeletedAtIsNull(boardId).orElseThrow(BoardNotFoundException::thrown);
 
         // 사용자 권한 검증
-        if(!boardEntity.getUser().getId().equals(userId)){
+        if(!verifyBoardUserPermissions(boardEntity.getUser(), userId)){
             throw BoardAuthorizationException.thrown();
         }
 
         boardEntity.delete();
+    }
+
+    private boolean verifyBoardUserPermissions(UserEntity userEntity, Long userId) {
+        if(!userEntity.getId().equals(userId)){
+            return false;
+        }
+        return true;
     }
 }

@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
-@AllArgsConstructor
 public class BoardDetailResponse {
     private Long id;
     private String title;
@@ -16,6 +15,19 @@ public class BoardDetailResponse {
     private int likeCount;
     private int dislikeCount;
     private boolean isBest;
+
+    private BoardDetailResponse(Long id, String title, String content, String category, Long userId, String userNickname, int views, int likeCount, int dislikeCount, boolean isBest) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.category = category;
+        this.userId = userId;
+        this.userNickname = userNickname;
+        this.views = views;
+        this.likeCount = likeCount;
+        this.dislikeCount = dislikeCount;
+        this.isBest = isBest;
+    }
 
     public static BoardDetailResponse of(Long id, String title, String content, String category, Long userId, String userNickname, int views, int likeCount, int dislikeCount, boolean isBest) {
         return new BoardDetailResponse(id, title, content, category, userId, userNickname, views, likeCount, dislikeCount, isBest);

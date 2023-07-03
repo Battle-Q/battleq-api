@@ -6,7 +6,6 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 
 @Getter
-@AllArgsConstructor
 public class UpdateBoardResponse {
     private Long id;
     private String title;
@@ -17,6 +16,18 @@ public class UpdateBoardResponse {
     private int likeCount;
     private int dislikeCount;
     private boolean isBest;
+
+    private UpdateBoardResponse(Long id, String title, String content, String category, String userNickname, int views, int likeCount, int dislikeCount, boolean isBest) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.category = category;
+        this.userNickname = userNickname;
+        this.views = views;
+        this.likeCount = likeCount;
+        this.dislikeCount = dislikeCount;
+        this.isBest = isBest;
+    }
 
     public static UpdateBoardResponse of(Long id, String title, String content, String category, String writer, int views, int likeCount, int dislikeCount, boolean isBest) {
         return new UpdateBoardResponse(id, title, content, category, writer, views, likeCount, dislikeCount, isBest);

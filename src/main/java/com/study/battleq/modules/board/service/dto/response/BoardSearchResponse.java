@@ -7,7 +7,6 @@ import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 
 @Getter
-@AllArgsConstructor
 public class BoardSearchResponse {
     private Long id;
     private String title;
@@ -18,7 +17,19 @@ public class BoardSearchResponse {
     private int likeCount;
     private int dislikeCount;
     private boolean isBest;
+
     // private boolean isRecent;
+    private BoardSearchResponse(Long id, String title, String content, String category, String userNickname, int views, int likeCount, int dislikeCount, boolean isBest) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.category = category;
+        this.userNickname = userNickname;
+        this.views = views;
+        this.likeCount = likeCount;
+        this.dislikeCount = dislikeCount;
+        this.isBest = isBest;
+    }
 
     public static BoardSearchResponse of(Long id, String title, String content, String category, String userNickname, int views, int likeCount, int dislikeCount, boolean isBest) {
         return new BoardSearchResponse(id, title, content, category, userNickname, views, likeCount, dislikeCount, isBest);

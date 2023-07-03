@@ -48,7 +48,7 @@ public class BoardEntity extends BaseEntity {
         this.category = category;
     }
 
-    public static BoardEntity of(String title, String content, String category, UserEntity userEntity) {
+    public static BoardEntity createBoardEntity(String title, String content, String category, UserEntity userEntity) {
         return new BoardEntity(title, content, category, userEntity, 0, 0, 0, false);
     }
 
