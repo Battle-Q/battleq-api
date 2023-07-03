@@ -15,7 +15,9 @@ public class BoardDto {
     private String title;
     private String content;
     private String category;
-    private boolean priority;
-    private String writer;
+    private Long userId;
     private int view;
+    private int like;
+    private int dislike;
+    private boolean isBest;
 }
