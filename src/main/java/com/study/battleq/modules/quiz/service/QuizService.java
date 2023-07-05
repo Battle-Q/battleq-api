@@ -6,7 +6,8 @@ import com.study.battleq.modules.quiz.domain.entity.QuizDto;
 public interface QuizService {
     QuizDto getQuiz(Long quizId);
 
-    void createQuiz(CreateQuizRequest createQuizRequest);
+    void createCatchMind(CreateQuizRequest createQuizRequest);
+    void createShortAnswer(CreateQuizRequest createQuizRequest);
 
     void deleteQuiz(Long quizId);
 }
