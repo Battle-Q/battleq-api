@@ -3,7 +3,6 @@ package com.study.battleq.modules.quiz.controller.v1;
 import com.study.battleq.infrastructure.common.dto.ResponseDto;
 import com.study.battleq.modules.quiz.domain.dto.CreateQuizRequest;
 import com.study.battleq.modules.quiz.domain.entity.QuizDto;
-import com.study.battleq.modules.quiz.domain.entity.QuizType;
 import com.study.battleq.modules.quiz.service.QuizService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -28,12 +27,10 @@ public class QuizControllerV1 {
             //@AuthenticationPrincipal BattleQUser user,
             @Valid @RequestBody CreateQuizRequest createQuizRequest) {
 
-        if (createQuizRequest.getQuizType() == QuizType.CATCH_MIND) {
-            quizService.createCatchMind(createQuizRequest);
-        }
+        switch (createQuizRequest.getQuizType()) {
+            case CATCH_MIND -> quizService.createCatchMind(createQuizRequest);
+            case SHORT_ANSWER -> quizService.createShortAnswer(createQuizRequest);
 
-        if (createQuizRequest.getQuizType() == QuizType.SHORT_ANSWER) {
-            quizService.createShortAnswer(createQuizRequest);
         }
 
         return ResponseDto.ok();
