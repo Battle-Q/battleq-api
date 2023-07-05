@@ -16,16 +16,18 @@ public class CreateQuizRequest {
     private String question;
     private String answer;
     private String description;
+    private String image;
 
-    private CreateQuizRequest(QuizType quizType, String question, String answer, String description) {
+    private CreateQuizRequest(QuizType quizType, String question, String answer, String description, String image) {
         this.quizType = quizType;
         this.question = question;
         this.answer = answer;
         this.description = description;
+        this.image =image;
     }
 
-    public static CreateQuizRequest of(QuizType quizType, String question, String answer, String description) {
-        return new CreateQuizRequest(quizType, question, answer, description);
+    public static CreateQuizRequest of(QuizType quizType, String question, String answer, String description, String image) {
+        return new CreateQuizRequest(quizType, question, answer, description, image);
     }
 
 }
