@@ -31,7 +31,7 @@ public class QuizServiceImpl implements QuizService {
     @Override
     public void createCatchMind(CreateQuizRequest createQuizRequest) {
 //        QuizEntity quiz = QuizEntity.of(createQuizRequest.getQuizType(), createQuizRequest.getQuizData());
-        CatchMind quiz = CatchMind.of("", "", "", "");
+        CatchMind quiz = CatchMind.of(createQuizRequest.getQuestion(), createQuizRequest.getAnswer(), createQuizRequest.getDescription(), createQuizRequest.getImage());
 
         try {
             quizRepository.save(quiz);
