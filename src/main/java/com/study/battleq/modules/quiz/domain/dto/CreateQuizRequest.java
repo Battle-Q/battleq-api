@@ -13,16 +13,19 @@ public class CreateQuizRequest {
 
     @NotNull
     private QuizType quizType;
-    @NotNull
-    private String quizData;
+    private String question;
+    private String answer;
+    private String description;
 
-    private CreateQuizRequest(QuizType quizType, String quizData) {
+    private CreateQuizRequest(QuizType quizType, String question, String answer, String description) {
         this.quizType = quizType;
-        this.quizData = quizData;
+        this.question = question;
+        this.answer = answer;
+        this.description = description;
     }
 
-    public static CreateQuizRequest of(QuizType quizType, String quizData){
-        return new CreateQuizRequest(quizType, quizData);
+    public static CreateQuizRequest of(QuizType quizType, String question, String answer, String description) {
+        return new CreateQuizRequest(quizType, question, answer, description);
     }
 
 }
