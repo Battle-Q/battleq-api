@@ -1,22 +1,25 @@
 spring:
-  h2:
-    console:
-      enabled: true
-    datasource:
-      driver-class-name: org.h2.Driver
-      url: jdbc:h2:mem:testdb
-      username: sa
-      password:
+  application:
+    name: battleq-api
+  cloud:
+    config:
+      uri: http://wwww.gossing-server.com:8083
+  config:
+    import: 'configserver:'
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url:
+    username:
+    password:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: validate
     properties:
       format_sql: true
     open-in-view: false
-  datasource:
-    generate-unique-name: false
   redis:
+    host: host
     port: 6379
 management:
   endpoints:
@@ -27,7 +30,7 @@ management:
 jwt:
   access-token-expire-time: 1800
   refresh-token-expire-time: 604800
-  secret: f26326bb0fcaf211bf1c1965b23d63b46ecb111b3998d354986faae8235723613837fa62f484b71d29746d70dda0014b1f4cc6fcb46035b8add06c482774b096
+  secret: secret
 
 jasypt:
   encryptor:
