@@ -28,3 +28,7 @@ jwt:
   access-token-expire-time: 1800
   refresh-token-expire-time: 604800
   secret: f26326bb0fcaf211bf1c1965b23d63b46ecb111b3998d354986faae8235723613837fa62f484b71d29746d70dda0014b1f4cc6fcb46035b8add06c482774b096
+
+jasypt:
+  encryptor:
+    password: password
