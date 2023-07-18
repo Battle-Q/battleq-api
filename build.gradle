@@ -40,6 +40,7 @@ dependencies {
     implementation 'it.ozimov:embedded-redis:0.7.2'
     //Jasypt
     implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.5'
+    implementation 'org.springframework.cloud:spring-cloud-starter-config'
 }
 
 tasks.named('test') {
