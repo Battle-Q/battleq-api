@@ -3,7 +3,7 @@ spring:
     name: battleq-api
   cloud:
     config:
-      uri: http://wwww.gossing-server.com:8083
+      uri: http://wwww.gossing-server.com:8888
   config:
     import: 'configserver:'
   datasource:
