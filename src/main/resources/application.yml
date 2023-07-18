@@ -34,4 +34,4 @@ jwt:
 
 jasypt:
   encryptor:
-    password: password
+    password: ${JASYPT_PASSWORD}
