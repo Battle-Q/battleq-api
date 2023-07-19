@@ -24,6 +24,7 @@ public class JasyptConfiguration {
     SimpleStringPBEConfig config = new SimpleStringPBEConfig();
     config.setPassword(encKey);
     config.setAlgorithm(ALGORITHM);
+    config.setPoolSize("1");
     encryptor.setConfig(config);
     return encryptor;
   }
