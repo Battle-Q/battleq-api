@@ -1,9 +1,8 @@
-package com.study.battleq.modules.quiz.domain.entity;
+package com.study.battleq.modules.quiz.domain.entity.QuizItem;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 

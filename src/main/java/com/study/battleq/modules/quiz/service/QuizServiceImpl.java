@@ -2,6 +2,9 @@ package com.study.battleq.modules.quiz.service;
 
 import com.study.battleq.modules.quiz.domain.dto.CreateQuizRequest;
 import com.study.battleq.modules.quiz.domain.entity.*;
+import com.study.battleq.modules.quiz.domain.entity.QuizItem.CatchMind;
+import com.study.battleq.modules.quiz.domain.entity.QuizItem.QuizEntity;
+import com.study.battleq.modules.quiz.domain.entity.QuizItem.ShortAnswer;
 import com.study.battleq.modules.quiz.exception.QuizNotFoundException;
 import com.study.battleq.modules.quiz.repository.QuizRepository;
 import lombok.RequiredArgsConstructor;
