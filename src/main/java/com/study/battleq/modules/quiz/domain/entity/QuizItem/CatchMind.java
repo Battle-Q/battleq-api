@@ -1,14 +1,11 @@
-package com.study.battleq.modules.quiz.domain.entity;
+package com.study.battleq.modules.quiz.domain.entity.QuizItem;
 
-import com.study.battleq.infrastructure.common.entity.BaseEntity;
 import lombok.AccessLevel;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.Table;
 
 @Entity
 @DiscriminatorValue("CATCH_MIND")

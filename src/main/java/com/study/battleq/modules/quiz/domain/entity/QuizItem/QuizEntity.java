@@ -1,4 +1,4 @@
-package com.study.battleq.modules.quiz.domain.entity;
+package com.study.battleq.modules.quiz.domain.entity.QuizItem;
 
 import com.study.battleq.infrastructure.common.entity.BaseEntity;
 import lombok.*;
