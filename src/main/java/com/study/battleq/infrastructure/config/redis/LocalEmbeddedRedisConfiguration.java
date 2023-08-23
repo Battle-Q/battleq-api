@@ -32,7 +32,6 @@ public class LocalEmbeddedRedisConfiguration {
 
   @PostConstruct
   public void redisServer() throws Exception {
-    System.out.println("redisPort = " + redisPort);
     int port = isRedisRunning() ? findAvailablePort() : redisPort;
     redisServer = getRedisServer(port);
     redisServer.start();
