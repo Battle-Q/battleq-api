@@ -8,21 +8,18 @@ import com.study.battleq.modules.user.service.dto.UserResponseDto;
 import com.study.battleq.modules.user.service.dto.UserSignupCommand;
 import com.study.battleq.modules.user.service.exception.AlreadySignupException;
 import com.study.battleq.modules.user.service.exception.AlreadyUsedNicknameException;
-import com.study.battleq.modules.user.service.usecase.UserSignupUseCase;
-import com.study.battleq.modules.user.service.usecase.UserWithdrawUseCase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class UserService implements UserSignupUseCase, UserWithdrawUseCase {
+public class UserService {
 
   private final UserQueryService userQueryService;
   private final UserCommandService userCommandService;
   private final PasswordEncoder passwordEncoder;
 
-  @Override
   public void signup(UserSignupCommand command) {
     validateAlreadySignup(command.getEmail());
     validateNickname(command.getNickname());
@@ -31,7 +28,6 @@ public class UserService implements UserSignupUseCase, UserWithdrawUseCase {
     userCommandService.save(entity);
   }
 
-  @Override
   public void withdraw(Long id) {
     UserEntity entity = userQueryService.findById(id);
     entity.withdraw();

@@ -7,8 +7,6 @@ import com.study.battleq.modules.user.service.UserService;
 import com.study.battleq.modules.user.service.dto.TokenDto;
 import com.study.battleq.modules.user.service.dto.UserResponseDto;
 import com.study.battleq.modules.user.service.dto.UserSignupCommand;
-import com.study.battleq.modules.user.service.usecase.UserSignupUseCase;
-import com.study.battleq.modules.user.service.usecase.UserWithdrawUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -32,8 +30,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class UserController {
 
-  private final UserSignupUseCase userSignupUseCase;
-  private final UserWithdrawUseCase userWithdrawUseCase;
   private final UserService userService;
 
   @Operation(summary = "회원가입", description = "회원가입을 진행합니다.")
@@ -82,7 +78,7 @@ public class UserController {
   @PostMapping("")
   public ResponseDto<Void> signup(@RequestBody @Valid UserSignupRequest request) {
     UserSignupCommand command = UserSignupCommand.of(request.email(), request.name(), request.password(), request.nickname());
-    userSignupUseCase.signup(command);
+    userService.signup(command);
     return ResponseDto.ok();
   }
 
@@ -104,7 +100,7 @@ public class UserController {
   )
   @PostMapping("/withdraw")
   public ResponseDto<Void> withdraw(@Parameter(hidden = true) @AuthenticationPrincipal BattleQUser battleQUser) {
-    userWithdrawUseCase.withdraw(battleQUser.getId());
+    userService.withdraw(battleQUser.getId());
     return ResponseDto.ok();
   }
 
