@@ -1,6 +1,7 @@
 package com.study.battleq.infrastructure.config.redis;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -21,7 +22,8 @@ import java.io.InputStreamReader;
 
 @Profile("local")
 @Configuration
-public class LocalRedisConfiguration {
+@ConditionalOnProperty(name = "redis.embedded.enabled",havingValue = "true")
+public class LocalEmbeddedRedisConfiguration {
 
   @Value("${spring.redis.port}")
   private int redisPort;
@@ -30,6 +32,7 @@ public class LocalRedisConfiguration {
 
   @PostConstruct
   public void redisServer() throws Exception {
+    System.out.println("redisPort = " + redisPort);
     int port = isRedisRunning() ? findAvailablePort() : redisPort;
     redisServer = getRedisServer(port);
     redisServer.start();

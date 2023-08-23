@@ -35,3 +35,7 @@ jwt:
 jasypt:
   encryptor:
     password: ${JASYPT_PASSWORD}
+
+redis:
+  embedded:
+    enabled: false
