@@ -105,6 +105,25 @@ public class UserController {
   }
 
   @Operation(summary = "내 정보 보기", description = "내 정보를 조회합니다.")
+  @ApiResponses(
+      {
+          @ApiResponse(
+              responseCode = "200",
+              description = "요청 성공",
+              content = @Content(schema = @Schema(implementation = TokenDto.class),
+                  examples = @ExampleObject(name = "정상", value = """
+                      {
+                        "data": {
+                          "name": "이름",
+                          "nickname": "nick123",
+                          "authority": "ROLE_STUDENT"
+                        },
+                        "status": "OK"
+                      }
+                      """))
+          )
+      }
+  )
   @GetMapping("/me")
   public ResponseDto<UserResponseDto> me(@Parameter(hidden = true) @AuthenticationPrincipal BattleQUser battleQUser) {
     return ResponseDto.ok(userService.me(battleQUser.getId()));
