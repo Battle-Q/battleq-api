@@ -4,7 +4,7 @@ import com.study.battleq.modules.user.domain.entity.Authority;
 import com.study.battleq.modules.user.domain.entity.UserEntity;
 import com.study.battleq.modules.user.domain.repository.UserCommandService;
 import com.study.battleq.modules.user.domain.repository.UserQueryService;
-import com.study.battleq.modules.user.domain.repository.exception.UserNotFoundException;
+import com.study.battleq.modules.user.service.dto.UserResponseDto;
 import com.study.battleq.modules.user.service.dto.UserSignupCommand;
 import com.study.battleq.modules.user.service.exception.AlreadySignupException;
 import com.study.battleq.modules.user.service.exception.AlreadyUsedNicknameException;
@@ -36,6 +36,15 @@ public class UserService implements UserSignupUseCase, UserWithdrawUseCase {
     UserEntity entity = userQueryService.findById(id);
     entity.withdraw();
     userCommandService.save(entity);
+  }
+
+  public UserResponseDto me(Long userId) {
+    UserEntity userEntity = userQueryService.findById(userId);
+    return UserResponseDto.builder()
+        .name(userEntity.getName())
+        .nickname(userEntity.getNickname())
+        .authority(userEntity.getAuthority())
+        .build();
   }
 
   private void validateAlreadySignup(String email) {
