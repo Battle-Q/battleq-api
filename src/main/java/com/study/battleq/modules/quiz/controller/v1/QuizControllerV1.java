@@ -5,6 +5,7 @@ import com.study.battleq.modules.quiz.domain.dto.CreateQuizRequest;
 import com.study.battleq.modules.quiz.domain.entity.QuizDto;
 import com.study.battleq.modules.quiz.service.QuizService;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -25,13 +26,14 @@ public class QuizControllerV1 {
     @PostMapping("")
     public ResponseDto<Void> createQuiz(
             //@AuthenticationPrincipal BattleQUser user,
-            @Valid @RequestBody CreateQuizRequest createQuizRequest) {
+            @Valid @RequestBody CreateQuizRequest createQuizRequest) throws Exception {
 
-        switch (createQuizRequest.getQuizType()) {
-            case CATCH_MIND -> quizService.createCatchMind(createQuizRequest);
-            case SHORT_ANSWER -> quizService.createShortAnswer(createQuizRequest);
-
+        if(StringUtils.isEmpty(createQuizRequest.getQuizType().toString())){
+            throw new Exception();
         }
+        quizService.createQuiz(createQuizRequest);
+
+
 
         return ResponseDto.ok();
     }
