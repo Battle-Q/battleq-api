@@ -8,15 +8,20 @@ import com.study.battleq.modules.quiz.domain.entity.QuizItem.ShortAnswer;
 import com.study.battleq.modules.quiz.exception.QuizNotFoundException;
 import com.study.battleq.modules.quiz.repository.QuizRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class QuizServiceImpl implements QuizService {
 
     private final QuizRepository quizRepository;
 
+    public static final Logger logger = LoggerFactory.getLogger(QuizServiceImpl.class.getName());
 
     @Override
     public void createQuiz(CreateQuizRequest createQuizRequest) {
@@ -37,11 +42,10 @@ public class QuizServiceImpl implements QuizService {
     public QuizDto getQuiz(Long quizId) {
         // 삭제된거 고려
         // 트랜잭션 분리
-        QuizEntity quizEntity = quizRepository.findById(quizId).orElseThrow(QuizNotFoundException::thrown);
-
+        QuizEntity quizEntity = quizRepository.findByIdAndDeletedAtIsNull(quizId).orElseThrow(QuizNotFoundException::thrown);
 
 //        return new QuizDto(quizEntity.getId(), quizEntity.getQuizType(), quizEntity.getQuizData());
-        return new QuizDto(quizEntity.getId(), QuizType.SHORT_ANSWER, "");
+        return QuizDto.EntityToDto(quizEntity);
 
     }
 
@@ -54,7 +58,7 @@ public class QuizServiceImpl implements QuizService {
             quizRepository.save(quiz);
 
         } catch (IllegalArgumentException e) {
-            //todo custom Exception 던지기
+            logger.error("fail createShortAnswer : {}",e.getMessage());
             throw new IllegalArgumentException();
         }
 
@@ -69,7 +73,7 @@ public class QuizServiceImpl implements QuizService {
             quizRepository.save(quiz);
 
         } catch (IllegalArgumentException e) {
-            //todo custom Exception 던지기
+            logger.error("fail createTrueOrFalse : {}",e.getMessage());
             throw new IllegalArgumentException();
         }
 
@@ -84,7 +88,7 @@ public class QuizServiceImpl implements QuizService {
             quizRepository.save(quiz);
 
         } catch (IllegalArgumentException e) {
-            //todo custom Exception 던지기
+            logger.error("fail createCatchMind : {}",e.getMessage());
             throw new IllegalArgumentException();
         }
 

@@ -82,7 +82,7 @@ class QuizControllerV1Test {
         mockMvc.perform(post("/api/v1/quizzes")
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(CreateQuizRequest.of(QuizType.SHORT_ANSWER, "1"))))
+                        .content(objectMapper.writeValueAsString(CreateQuizRequest.of(QuizType.SHORT_ANSWER, "question","answer","description",null))))
                 .andDo(print())
                 .andExpect(status().isOk());
 

@@ -3,8 +3,12 @@ package com.study.battleq.modules.quiz.controller.v1;
 import com.study.battleq.infrastructure.common.dto.ResponseDto;
 import com.study.battleq.modules.quiz.domain.dto.CreateQuizRequest;
 import com.study.battleq.modules.quiz.domain.entity.QuizDto;
+import com.study.battleq.modules.quiz.domain.entity.QuizType;
+import com.study.battleq.modules.quiz.exception.NoneQuizTypeException;
+import com.study.battleq.modules.quiz.exception.WrongQuizTypeException;
 import com.study.battleq.modules.quiz.service.QuizService;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.EnumUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,11 +33,14 @@ public class QuizControllerV1 {
             @Valid @RequestBody CreateQuizRequest createQuizRequest) throws Exception {
 
         if(StringUtils.isEmpty(createQuizRequest.getQuizType().toString())){
-            throw new Exception();
+            throw NoneQuizTypeException.thrown();
         }
+
+        if(EnumUtils.isValidEnum(QuizType.class, createQuizRequest.getQuizType().toString())){
+            throw WrongQuizTypeException.thrown();
+        }
+
         quizService.createQuiz(createQuizRequest);
-
-
 
         return ResponseDto.ok();
     }
