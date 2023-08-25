@@ -19,6 +19,21 @@ public class QuizServiceImpl implements QuizService {
 
 
     @Override
+    public void createQuiz(CreateQuizRequest createQuizRequest) {
+//        QuizEntity quiz = QuizEntity.of(createQuizRequest.getQuizType(), createQuizRequest.getQuizData());
+        switch (createQuizRequest.getQuizType()) {
+            case SHORT_ANSWER -> createShortAnswer(createQuizRequest);
+//            case TRUE_OR_FALSE -> createShortAnswer(createQuizRequest);
+//            case MULTIPLE_CHOICE -> createShortAnswer(createQuizRequest);
+//            case INITIAL -> createShortAnswer(createQuizRequest);
+            case CATCH_MIND -> createCatchMind(createQuizRequest);
+//            case MAKE_ORDER -> quizService.createCatchMind(createQuizRequest);
+        }
+
+        
+    }
+
+    @Override
     public QuizDto getQuiz(Long quizId) {
         // 삭제된거 고려
         // 트랜잭션 분리
@@ -30,11 +45,10 @@ public class QuizServiceImpl implements QuizService {
 
     }
 
-
     @Override
-    public void createCatchMind(CreateQuizRequest createQuizRequest) {
+    public void createShortAnswer(CreateQuizRequest createQuizRequest) {
 //        QuizEntity quiz = QuizEntity.of(createQuizRequest.getQuizType(), createQuizRequest.getQuizData());
-        CatchMind quiz = CatchMind.of(createQuizRequest.getQuestion(), createQuizRequest.getAnswer(), createQuizRequest.getDescription(), createQuizRequest.getImage());
+        ShortAnswer quiz = ShortAnswer.of(createQuizRequest.getQuestion(), createQuizRequest.getAnswer(), createQuizRequest.getDescription());
 
         try {
             quizRepository.save(quiz);
@@ -46,11 +60,25 @@ public class QuizServiceImpl implements QuizService {
 
     }
 
-
     @Override
-    public void createShortAnswer(CreateQuizRequest createQuizRequest) {
+    public void createTrueOrFalse(CreateQuizRequest createQuizRequest) {
 //        QuizEntity quiz = QuizEntity.of(createQuizRequest.getQuizType(), createQuizRequest.getQuizData());
         ShortAnswer quiz = ShortAnswer.of(createQuizRequest.getQuestion(), createQuizRequest.getAnswer(), createQuizRequest.getDescription());
+
+        try {
+            quizRepository.save(quiz);
+
+        } catch (IllegalArgumentException e) {
+            //todo custom Exception 던지기
+            throw new IllegalArgumentException();
+        }
+
+    }
+
+    @Override
+    public void createCatchMind(CreateQuizRequest createQuizRequest) {
+//        QuizEntity quiz = QuizEntity.of(createQuizRequest.getQuizType(), createQuizRequest.getQuizData());
+        CatchMind quiz = CatchMind.of(createQuizRequest.getQuestion(), createQuizRequest.getAnswer(), createQuizRequest.getDescription(), createQuizRequest.getImage());
 
         try {
             quizRepository.save(quiz);

@@ -1,9 +1,6 @@
 package com.study.battleq.modules.quiz.service;
 
-import com.study.battleq.modules.quiz.domain.dto.CreateQuizRequest;
 import com.study.battleq.modules.quiz.domain.entity.QuizDto;
-import com.study.battleq.modules.quiz.domain.entity.QuizEntity;
-import com.study.battleq.modules.quiz.domain.entity.QuizType;
 import com.study.battleq.modules.quiz.repository.QuizRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -38,7 +35,7 @@ class QuizServiceTest {
 
 //        when(quizRepository.save(any())).thenReturn(save);
 
-        CreateQuizRequest createQuizRequest = CreateQuizRequest.of(QuizType.SHORT_ANSWER, "quiz data");
+//        CreateQuizRequest createQuizRequest = CreateQuizRequest.of(QuizType.SHORT_ANSWER, "quiz data");
 //        quizService.createQuiz(createQuizRequest);
 
 //        assertEquals(QuizType.SHORT_ANSWER, save.getQuizType());
@@ -51,7 +48,7 @@ class QuizServiceTest {
     @DisplayName("퀴즈 정보가 정상 조회된다")
     void 퀴즈_조회() {
 
-        when(quizRepository.findById(anyLong())).thenReturn(Optional.of(QuizEntity.of(QuizType.SHORT_ANSWER, "short")));
+//        when(quizRepository.findById(anyLong())).thenReturn(Optional.of(QuizEntity.of(QuizType.SHORT_ANSWER, "short")));
 
         QuizDto quiz = quizService.getQuiz(1L);
 
