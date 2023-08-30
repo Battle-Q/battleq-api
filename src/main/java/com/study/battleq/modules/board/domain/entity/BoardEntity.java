@@ -1,52 +1,58 @@
 package com.study.battleq.modules.board.domain.entity;
 
 import com.study.battleq.infrastructure.common.entity.BaseEntity;
+import com.study.battleq.modules.user.domain.entity.UserEntity;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.jpa.repository.EntityGraph;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Getter
 @Table(name = "boards")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BoardEntity extends BaseEntity {
-    @Column(name = "title")
+    @Column(name = "title", nullable = false)
     private String title;
-    @Column(name = "content")
+    @Column(name = "content", nullable = false)
     private String content;
-
-    @Column(name = "category")
+    @Column(name = "category", nullable = false)
     private String category;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private UserEntity user;
+    @Column(name = "views")
+    private int views;
+    @Column(name = "likeCount")
+    private int likeCount;
+    @Column(name = "dislikeCount")
+    private int dislikeCount;
+    @Column(name = "isBest")
+    private boolean isBest;
 
-    @Column(name = "priority")
-    private boolean priority;
-
-    @Column(name = "writer")
-    private String writer;
-
-    @Column(name = "view")
-    private int view;
-
-    private BoardEntity(String title, String content, String category, boolean priority, String writer) {
+    private BoardEntity(String title, String content, String category, UserEntity userEntity, int views, int likeCount, int dislikeCount, boolean isBest) {
         this.title = title;
         this.content = content;
         this.category = category;
-        this.priority = priority;
-        this.writer = writer;
-        this.view = 0;
+        this.user = userEntity;
+        this.views = views;
+        this.likeCount = likeCount;
+        this.dislikeCount = dislikeCount;
+        this.isBest = isBest;
     }
 
-    public void updateBoard(String content, String category, boolean priority){
+    public void updateBoard(String content, String category) {
         this.content = content;
         this.category = category;
-        this.priority = priority;
     }
-    public static BoardEntity of(String title, String content, String category, boolean priority, String writer) {
-        return new BoardEntity(title, content, category, priority, writer);
+
+    public static BoardEntity createBoardEntity(String title, String content, String category, UserEntity userEntity) {
+        return new BoardEntity(title, content, category, userEntity, 0, 0, 0, false);
+    }
+
+    public static BoardEntity of(String title, String content, String category, UserEntity userEntity, int views, int likeCount, int dislikeCount, boolean isBest) {
+        return new BoardEntity(title, content, category, userEntity, views, likeCount, dislikeCount, isBest);
     }
 }
