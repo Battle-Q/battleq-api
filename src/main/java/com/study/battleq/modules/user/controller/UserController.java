@@ -3,10 +3,10 @@ package com.study.battleq.modules.user.controller;
 import com.study.battleq.infrastructure.common.dto.ResponseDto;
 import com.study.battleq.modules.user.controller.request.UserSignupRequest;
 import com.study.battleq.modules.user.domain.entity.BattleQUser;
+import com.study.battleq.modules.user.service.UserService;
 import com.study.battleq.modules.user.service.dto.TokenDto;
+import com.study.battleq.modules.user.service.dto.UserResponseDto;
 import com.study.battleq.modules.user.service.dto.UserSignupCommand;
-import com.study.battleq.modules.user.service.usecase.UserSignupUseCase;
-import com.study.battleq.modules.user.service.usecase.UserWithdrawUseCase;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -15,15 +15,14 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.validation.Valid;
 
 @Tag(name = "User")
 @RestController
@@ -31,8 +30,7 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class UserController {
 
-  private final UserSignupUseCase userSignupUseCase;
-  private final UserWithdrawUseCase userWithdrawUseCase;
+  private final UserService userService;
 
   @Operation(summary = "회원가입", description = "회원가입을 진행합니다.")
   @ApiResponses(
@@ -80,7 +78,7 @@ public class UserController {
   @PostMapping("")
   public ResponseDto<Void> signup(@RequestBody @Valid UserSignupRequest request) {
     UserSignupCommand command = UserSignupCommand.of(request.email(), request.name(), request.password(), request.nickname());
-    userSignupUseCase.signup(command);
+    userService.signup(command);
     return ResponseDto.ok();
   }
 
@@ -102,7 +100,32 @@ public class UserController {
   )
   @PostMapping("/withdraw")
   public ResponseDto<Void> withdraw(@Parameter(hidden = true) @AuthenticationPrincipal BattleQUser battleQUser) {
-    userWithdrawUseCase.withdraw(battleQUser.getId());
+    userService.withdraw(battleQUser.getId());
     return ResponseDto.ok();
+  }
+
+  @Operation(summary = "내 정보 보기", description = "내 정보를 조회합니다.")
+  @ApiResponses(
+      {
+          @ApiResponse(
+              responseCode = "200",
+              description = "요청 성공",
+              content = @Content(schema = @Schema(implementation = TokenDto.class),
+                  examples = @ExampleObject(name = "정상", value = """
+                      {
+                        "data": {
+                          "name": "이름",
+                          "nickname": "nick123",
+                          "authority": "ROLE_STUDENT"
+                        },
+                        "status": "OK"
+                      }
+                      """))
+          )
+      }
+  )
+  @GetMapping("/me")
+  public ResponseDto<UserResponseDto> me(@Parameter(hidden = true) @AuthenticationPrincipal BattleQUser battleQUser) {
+    return ResponseDto.ok(userService.me(battleQUser.getId()));
   }
 }

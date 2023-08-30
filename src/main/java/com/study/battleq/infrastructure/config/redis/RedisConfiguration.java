@@ -1,6 +1,7 @@
 package com.study.battleq.infrastructure.config.redis;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -9,9 +10,9 @@ import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactor
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
-@Profile("prd")
 @Configuration
 @RequiredArgsConstructor
+@ConditionalOnProperty(name = "redis.embedded.enabled",havingValue = "false")
 public class RedisConfiguration {
 
   @Bean

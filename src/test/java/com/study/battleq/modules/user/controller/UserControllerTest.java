@@ -23,8 +23,10 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.stream.Stream;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -115,6 +117,20 @@ class UserControllerTest {
             .andDo(print())
             //then
             .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithUserDetails(value = "email", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    void me_api_조회() throws Exception {
+        //given
+        //when
+        mockMvc.perform(get("/api/v1/users/me"))
+            .andDo(print())
+        //then
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.data.name").value("이름"))
+            .andExpect(jsonPath("$.data.nickname").value("nick123"))
+            .andExpect(jsonPath("$.data.authority").value("ROLE_STUDENT"));
     }
 
     private static Stream<Arguments> validationTestStubbing() {
