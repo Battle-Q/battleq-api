@@ -3,8 +3,10 @@ package com.study.battleq.modules.board.domain.repository;
 import com.study.battleq.modules.board.domain.entity.BoardEntity;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -19,6 +21,10 @@ import static org.junit.jupiter.api.Assertions.*;
  * Repository Layer Test
  * 데이터에 대한 조작 및 조회(CRUD)를 담당하는 Layer이므로, Repository의 동작(저장 및 조회)에 대해 테스트 한다.
  * 저장을 위한 JPA 연관 관계가 적절히 구성되었는지, Repository 메소드가 제대로 구현되었는지 확인하는 것을 목저으로 한다.
+ *
+ *
+ *
+ *
  * <p>
  * 1. 게시판 저장
  * 2. 게시판 단건(Id) 조회
@@ -27,126 +33,119 @@ import static org.junit.jupiter.api.Assertions.*;
  * 5. 게시판 단건 업데이트
  * 6. 게시판 삭제
  */
-@SpringBootTest
+
+@DataJpaTest
 @ActiveProfiles("local")
 class BoardRepositoryTest {
 
-    private String testTitle = "테스트";
+    private static final String testTitle = "테스트";
     private String testContent = "내용";
     private String testCategory = "자유게시판";
     private String testDumpUser = "user1";
-    private BoardRepository boardRepository;
-
     @Autowired
-    public BoardRepositoryTest(BoardRepository boardRepository) {
-        this.boardRepository = boardRepository;
-    }
-
-    @PersistenceContext
-    EntityManager entityManager;
-
-    @AfterEach
-    void 게시판_전체_삭제() {
-        //boardRepository.deleteAll();
-    }
-
-    @BeforeEach
-    void 게시판_초기화() {
-        boardRepository.save(BoardEntity.of(testTitle, testContent, testCategory, false, testDumpUser));
-    }
+    private BoardRepository boardRepository;
 
     @Test
     void 게시판_저장(){
         //given
+        BoardEntity givenEntity = BoardEntity.of("게시판 저장", testContent, testCategory, false, testDumpUser);
 
         //when
-        BoardEntity saveBoard = boardRepository.save(BoardEntity.of("게시판 저장", testContent, testCategory, false, testDumpUser));
+        BoardEntity saveEntity = boardRepository.save(givenEntity);
 
         //then
-        assertEquals(saveBoard.getTitle(), "게시판 저장");
+        Optional<BoardEntity> resultEntity = boardRepository.findByIdAndDeletedAtIsNull(saveEntity.getId());
+        assertTrue(resultEntity.isPresent());
     }
     @Test
-    void 계시판_비정상_조회_Id() {
+    void 게시판_비정상_조회_Id() {
         //given
 
         //when
         Long wrongId = 9999L;
-        Optional<BoardEntity> validBoard = boardRepository.findByIdAndDeletedAtIsNull(wrongId);
+        Optional<BoardEntity> resultEntity = boardRepository.findByIdAndDeletedAtIsNull(wrongId);
 
-        //then : 게시글이 없어도 Exception이 아닐 수 있음.
-        assertFalse(validBoard.isPresent());
+        //then
+        assertFalse(resultEntity.isPresent());
     }
 
     @Test
     void 게시판_정상_조회_Id() {
         //given
-        BoardEntity saveBoard = boardRepository.save(BoardEntity.of("새로운 게시글", "본문", "자유게시판", false, "user1"));
+        BoardEntity saveEntity = boardRepository.save(BoardEntity.of("새로운 게시글", "본문", "자유게시판", false, "user1"));
 
         //when
-        Optional<BoardEntity> validBoard = boardRepository.findByIdAndDeletedAtIsNull(saveBoard.getId());
+        Optional<BoardEntity> validBoard = boardRepository.findByIdAndDeletedAtIsNull(saveEntity.getId());
 
         //then
-        assertEquals(saveBoard.getId(), validBoard.get().getId());
+        assertTrue(validBoard.isPresent());
+        BoardEntity boardEntity = validBoard.get();
+
+        assertEquals(saveEntity.getId(), boardEntity.getId());
     }
 
     @Test
-    void 계시판_비정상_조회_Title() {
+    void 게시판_비정상_조회_Title() {
         //given
 
         //when
         List<BoardEntity> validBoard = boardRepository.findByTitleAndDeletedAtIsNull("잘못된 제목");
 
         //then
-        assertFalse(validBoard.size() > 0);
+        assertTrue(validBoard.isEmpty());
     }
 
     @Test
     void 게시판_정상_조회_Title() {
         //given
+        BoardEntity saveEntity = boardRepository.save(BoardEntity.of("테스트", "본문", "자유게시판", false, "user1"));
 
         //when
         List<BoardEntity> validBoard = boardRepository.findByTitleAndDeletedAtIsNull("테스트");
 
         //then
-        assertEquals(validBoard.get(0).getTitle(), testTitle);
+        assertEquals(validBoard.get(0).getTitle(), saveEntity.getTitle());
     }
 
     @Test
     void 게시판_전체_조회(){
         //given
+        boardRepository.save(BoardEntity.of("테스트", "본문", "자유게시판", false, "user1"));
 
         //when
         List<BoardEntity> validBoard = boardRepository.findAllByDeletedAtIsNull();
 
         //given
-        assertEquals(validBoard.get(0).getId() , 1L);
-        assertEquals(validBoard.get(0).getTitle() , testTitle);
+        assertFalse(validBoard.isEmpty());
     }
 
     @Test
     void 게시판_단건_업데이트(){
         //given
+        Long id = boardRepository.save(BoardEntity.of(testTitle, testContent, testCategory, false, testDumpUser)).getId();
 
         //when
-        Optional<BoardEntity> board = boardRepository.findByIdAndDeletedAtIsNull(1L);
-        board.get().updateBoard("변경한 본문", testCategory, false);
+        Optional<BoardEntity> board = boardRepository.findByIdAndDeletedAtIsNull(id);
 
-        board = boardRepository.findByIdAndDeletedAtIsNull(1L);
-        System.out.println("board = " + board.get().getContent());
+        BoardEntity boardEntity = board.get();
+        boardEntity.updateBoard("변경한 본문", testCategory, false);
+        boardRepository.save(boardEntity);
 
+        //then
+        Optional<BoardEntity> resultEntity = boardRepository.findByIdAndDeletedAtIsNull(id);
 
+        assertTrue(resultEntity.isPresent());
+        assertEquals(resultEntity.get().getContent(), "변경한 본문");
     }
     @Test
     void 계시판_삭제() {
-        // 확인중
         //given
-        BoardEntity saveBoard = boardRepository.save(BoardEntity.of("제목", "본문", "자유게시판", false, "user1"));
+        BoardEntity entity = BoardEntity.of("제목", "본문", "자유게시판", false, "user1");
 
         //when
-        //boardService.delete(saveBoard.getId());
-        entityManager.clear();
+        entity.delete();
+        BoardEntity saveBoard = boardRepository.save(entity);
 
-        //then
-        //assertThrows(BoardNotFoundException.class, () -> boardService.findById(saveBoard.getId()));
+        assertNotEquals(saveBoard.getDeletedAt(), null);
     }
 }

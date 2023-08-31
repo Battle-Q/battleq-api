@@ -64,5 +64,6 @@ public class BoardService {
 
         // board softDelete
         boardEntity.delete();
+        boardRepository.save(boardEntity);
     }
 }
