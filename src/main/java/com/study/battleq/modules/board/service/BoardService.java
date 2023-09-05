@@ -1,9 +1,9 @@
 package com.study.battleq.modules.board.service;
 
-import com.study.battleq.modules.board.service.dto.response.BoardSearchResponse;
-import com.study.battleq.modules.board.service.dto.BoardDto;
 import com.study.battleq.modules.board.domain.entity.BoardEntity;
 import com.study.battleq.modules.board.domain.repository.BoardRepository;
+import com.study.battleq.modules.board.service.dto.BoardDto;
+import com.study.battleq.modules.board.service.dto.response.BoardSearchResponse;
 import com.study.battleq.modules.board.service.dto.response.UpdateBoardResponse;
 import com.study.battleq.modules.board.service.exception.BoardNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -25,21 +25,21 @@ public class BoardService {
     public List<BoardSearchResponse> findAll() {
         List<BoardEntity> boardEntityList = boardRepository.findAllByDeletedAtIsNull();
 
-        return boardEntityList.stream().map(boardEntity -> BoardSearchResponse.of(boardEntity.getTitle(), boardEntity.getContent(), boardEntity.getCategory(), boardEntity.isPriority(), boardEntity.getWriter(), boardEntity.getView()))
+        return boardEntityList.stream().map(boardEntity -> BoardSearchResponse.of(boardEntity.getId(), boardEntity.getTitle(), 0L, 0L, 0L, "테스트 유저", "", false, false))
                 .collect(Collectors.toList());
     }
     public BoardSearchResponse findById(Long boardId) {
         BoardEntity boardEntity = boardRepository.findByIdAndDeletedAtIsNull(boardId)
                 .orElseThrow(BoardNotFoundException::thrown);
 
-        return BoardSearchResponse.of(boardEntity.getTitle(), boardEntity.getContent(), boardEntity.getCategory(), boardEntity.isPriority(), boardEntity.getWriter(), boardEntity.getView());
+        return BoardSearchResponse.of(boardEntity.getId(), boardEntity.getTitle(), 0L, 0L, 0L, "테스트 유저", "", false, false);
     }
 
     public List<BoardSearchResponse> findByTitle(String title){
         //TODO : 페이징 & Slice, 데이터가 존재하지 않을시 응답 방식 고려.
         List<BoardEntity> boardEntityList = boardRepository.findByTitleAndDeletedAtIsNull(title);
 
-        return boardEntityList.stream().map(boardEntity -> BoardSearchResponse.of(boardEntity.getTitle(), boardEntity.getContent(), boardEntity.getCategory(), boardEntity.isPriority(), boardEntity.getWriter(), boardEntity.getView()))
+        return boardEntityList.stream().map(boardEntity -> BoardSearchResponse.of(boardEntity.getId(), boardEntity.getTitle(), 0L, 0L, 0L, "테스트 유저", "", false, false))
                 .collect(Collectors.toList());
     }
 
