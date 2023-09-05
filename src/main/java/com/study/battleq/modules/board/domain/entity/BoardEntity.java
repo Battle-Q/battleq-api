@@ -32,6 +32,8 @@ public class BoardEntity extends BaseEntity {
     @Column(name = "view")
     private int view;
 
+    // isTrending -> 급상승 게시글
+
     private BoardEntity(String title, String content, String category, boolean priority, String writer) {
         this.title = title;
         this.content = content;
