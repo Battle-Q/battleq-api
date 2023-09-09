@@ -20,7 +20,7 @@ public class QuizDto {
         return new QuizDto(1L,QuizType.SHORT_ANSWER,"data");
     }
 
-    public static QuizDto EntityToDto(Quiz quiz) {
+    public static QuizDto entityToDto(Quiz quiz) {
         //todo 파라미터 수정
         return new QuizDto(1L,QuizType.SHORT_ANSWER,"data");
     }

@@ -20,9 +20,6 @@ import org.springframework.stereotype.Service;
 public class QuizServiceImpl implements QuizService {
 
     private final QuizRepository quizRepository;
-
-    public static final Logger logger = LoggerFactory.getLogger(QuizServiceImpl.class.getName());
-
     @Override
     public void createQuiz(CreateQuizRequest createQuizRequest) {
 //        QuizEntity quiz = QuizEntity.of(createQuizRequest.getQuizType(), createQuizRequest.getQuizData());
@@ -45,7 +42,7 @@ public class QuizServiceImpl implements QuizService {
         Quiz quiz = quizRepository.findByIdAndDeletedAtIsNull(quizId).orElseThrow(QuizNotFoundException::thrown);
 
 //        return new QuizDto(quizEntity.getId(), quizEntity.getQuizType(), quizEntity.getQuizData());
-        return QuizDto.EntityToDto(quiz);
+        return QuizDto.entityToDto(quiz);
 
     }
 
@@ -58,7 +55,7 @@ public class QuizServiceImpl implements QuizService {
             quizRepository.save(quiz);
 
         } catch (IllegalArgumentException e) {
-            logger.error("fail createShortAnswer : {}",e.getMessage());
+            log.error("fail createShortAnswer : {}",e.getMessage());
             throw new IllegalArgumentException();
         }
 
@@ -73,7 +70,7 @@ public class QuizServiceImpl implements QuizService {
             quizRepository.save(quiz);
 
         } catch (IllegalArgumentException e) {
-            logger.error("fail createTrueOrFalse : {}",e.getMessage());
+            log.error("fail createTrueOrFalse : {}",e.getMessage());
             throw new IllegalArgumentException();
         }
 
@@ -88,7 +85,7 @@ public class QuizServiceImpl implements QuizService {
             quizRepository.save(quiz);
 
         } catch (IllegalArgumentException e) {
-            logger.error("fail createCatchMind : {}",e.getMessage());
+            log.error("fail createCatchMind : {}",e.getMessage());
             throw new IllegalArgumentException();
         }
 

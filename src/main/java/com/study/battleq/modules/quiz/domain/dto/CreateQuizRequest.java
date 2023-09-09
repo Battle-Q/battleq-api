@@ -11,6 +11,7 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class CreateQuizRequest {
 
+    //todo validation 추가
     @NotNull
     private QuizType quizType;
     private String question;

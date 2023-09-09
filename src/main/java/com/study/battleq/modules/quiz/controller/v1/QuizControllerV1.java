@@ -32,6 +32,8 @@ public class QuizControllerV1 {
             //@AuthenticationPrincipal BattleQUser user,
             @Valid @RequestBody CreateQuizRequest createQuizRequest) throws Exception {
 
+
+        //todo DTO에 validation 추가하기
         if(StringUtils.isEmpty(createQuizRequest.getQuizType().toString())){
             throw NoneQuizTypeException.thrown();
         }
