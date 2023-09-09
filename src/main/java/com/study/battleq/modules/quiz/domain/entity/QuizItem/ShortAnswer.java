@@ -9,7 +9,7 @@ import javax.persistence.Entity;
 @Entity
 @DiscriminatorValue("SHORT_ANSWER")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ShortAnswer extends QuizEntity {
+public class ShortAnswer extends Quiz {
 
     private ShortAnswer(String question, String answer, String description) {
         super(question, answer, description);

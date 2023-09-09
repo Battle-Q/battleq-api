@@ -1,7 +1,7 @@
 package com.study.battleq.modules.quiz.domain.entity;
 
 
-import com.study.battleq.modules.quiz.domain.entity.QuizItem.QuizEntity;
+import com.study.battleq.modules.quiz.domain.entity.QuizItem.Quiz;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -20,7 +20,7 @@ public class QuizDto {
         return new QuizDto(1L,QuizType.SHORT_ANSWER,"data");
     }
 
-    public static QuizDto EntityToDto(QuizEntity quizEntity) {
+    public static QuizDto EntityToDto(Quiz quiz) {
         //todo 파라미터 수정
         return new QuizDto(1L,QuizType.SHORT_ANSWER,"data");
     }

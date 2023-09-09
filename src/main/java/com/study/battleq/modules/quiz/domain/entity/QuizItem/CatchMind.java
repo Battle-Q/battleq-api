@@ -10,7 +10,7 @@ import javax.persistence.Entity;
 @Entity
 @DiscriminatorValue("CATCH_MIND")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class CatchMind extends QuizEntity {
+public class CatchMind extends Quiz {
     @Column(name = "image")
     private String image;
 

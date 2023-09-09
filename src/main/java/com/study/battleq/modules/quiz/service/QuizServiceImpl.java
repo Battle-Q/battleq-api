@@ -3,7 +3,7 @@ package com.study.battleq.modules.quiz.service;
 import com.study.battleq.modules.quiz.domain.dto.CreateQuizRequest;
 import com.study.battleq.modules.quiz.domain.entity.*;
 import com.study.battleq.modules.quiz.domain.entity.QuizItem.CatchMind;
-import com.study.battleq.modules.quiz.domain.entity.QuizItem.QuizEntity;
+import com.study.battleq.modules.quiz.domain.entity.QuizItem.Quiz;
 import com.study.battleq.modules.quiz.domain.entity.QuizItem.ShortAnswer;
 import com.study.battleq.modules.quiz.exception.QuizNotFoundException;
 import com.study.battleq.modules.quiz.repository.QuizRepository;
@@ -42,10 +42,10 @@ public class QuizServiceImpl implements QuizService {
     public QuizDto getQuiz(Long quizId) {
         // 삭제된거 고려
         // 트랜잭션 분리
-        QuizEntity quizEntity = quizRepository.findByIdAndDeletedAtIsNull(quizId).orElseThrow(QuizNotFoundException::thrown);
+        Quiz quiz = quizRepository.findByIdAndDeletedAtIsNull(quizId).orElseThrow(QuizNotFoundException::thrown);
 
 //        return new QuizDto(quizEntity.getId(), quizEntity.getQuizType(), quizEntity.getQuizData());
-        return QuizDto.EntityToDto(quizEntity);
+        return QuizDto.EntityToDto(quiz);
 
     }
 
