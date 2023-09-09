@@ -1,6 +1,6 @@
 package com.study.battleq.modules.quiz.domain.entity;
 
-public enum QuizType {
+public enum QuizItemType {
     SHORT_ANSWER("단답형"),
     TRUE_OR_FALSE("OX퀴즈"),
     MULTIPLE_CHOICE("객관식"),
@@ -11,7 +11,7 @@ public enum QuizType {
     //생성자화
     private String description;
 
-    QuizType(String quizType) {
+    QuizItemType(String quizType) {
         this.description = quizType;
     }
 }

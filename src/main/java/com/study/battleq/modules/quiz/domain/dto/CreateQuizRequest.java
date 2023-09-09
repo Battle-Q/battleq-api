@@ -1,34 +1,22 @@
 package com.study.battleq.modules.quiz.domain.dto;
 
-
-import com.study.battleq.modules.quiz.domain.entity.QuizType;
+import com.study.battleq.modules.quiz.domain.entity.QuizCategoryType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotEmpty;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
 public class CreateQuizRequest {
+    @NotEmpty(message = "title 은 필수입니다.")
+    private String title;
 
-    //todo validation 추가
-    @NotNull
-    private QuizType quizType;
-    private String question;
-    private String answer;
+    @NotEmpty(message = "description 은 필수입니다.")
     private String description;
-    private String image;
 
-    private CreateQuizRequest(QuizType quizType, String question, String answer, String description, String image) {
-        this.quizType = quizType;
-        this.question = question;
-        this.answer = answer;
-        this.description = description;
-        this.image =image;
-    }
+//    @NotEmpty(message = "category 를 선택해주세요.")
+    private QuizCategoryType category;
 
-    public static CreateQuizRequest of(QuizType quizType, String question, String answer, String description, String image) {
-        return new CreateQuizRequest(quizType, question, answer, description, image);
-    }
-
+    private List<CreateQuizItemRequest> quizItemRequestList;
 }

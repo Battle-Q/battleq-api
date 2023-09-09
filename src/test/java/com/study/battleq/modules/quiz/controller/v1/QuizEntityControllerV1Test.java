@@ -1,11 +1,10 @@
 package com.study.battleq.modules.quiz.controller.v1;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.study.battleq.modules.quiz.domain.dto.CreateQuizRequest;
-import com.study.battleq.modules.quiz.domain.entity.QuizType;
-import com.study.battleq.modules.quiz.repository.QuizRepository;
-import com.study.battleq.modules.quiz.service.QuizService;
+import com.study.battleq.modules.quiz.domain.dto.CreateQuizItemRequest;
+import com.study.battleq.modules.quiz.domain.entity.QuizItemType;
+import com.study.battleq.modules.quiz.repository.QuizItemRepository;
+import com.study.battleq.modules.quiz.service.QuizItemService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,16 +29,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SqlGroup({
         @Sql(value = "/sql/quiz-controller-test-data.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 })
-class QuizControllerV1Test {
+class QuizEntityControllerV1Test {
 
     @Autowired
     private MockMvc mockMvc;
 
     @Autowired
-    QuizService quizService;
+    QuizItemService quizService;
 
     @Autowired
-    QuizRepository quizRepository;
+    QuizItemRepository quizRepository;
 
     @Autowired
     ObjectMapper objectMapper;
@@ -60,7 +59,7 @@ class QuizControllerV1Test {
         mockMvc.perform(get("/api/v1/quizzes/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.id").value(1))
-                .andExpect(jsonPath("$.data.quizType").value(QuizType.SHORT_ANSWER.toString()))
+                .andExpect(jsonPath("$.data.quizType").value(QuizItemType.SHORT_ANSWER.toString()))
                 .andExpect(jsonPath("$.data.quizData").value("11"));
     }
 
@@ -82,7 +81,7 @@ class QuizControllerV1Test {
         mockMvc.perform(post("/api/v1/quizzes")
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(CreateQuizRequest.of(QuizType.SHORT_ANSWER, "question","answer","description",null))))
+                        .content(objectMapper.writeValueAsString(CreateQuizItemRequest.of(QuizItemType.SHORT_ANSWER, "question","answer","description",null))))
                 .andDo(print())
                 .andExpect(status().isOk());
 

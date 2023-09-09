@@ -1,14 +1,13 @@
 package com.study.battleq.modules.quiz.service;
 
-import com.study.battleq.modules.quiz.domain.entity.QuizDto;
-import com.study.battleq.modules.quiz.repository.QuizRepository;
+import com.study.battleq.modules.quiz.domain.entity.QuizItemDto;
+import com.study.battleq.modules.quiz.repository.QuizItemRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.stubbing.OngoingStubbing;
 
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -19,13 +18,13 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class QuizServiceTest {
+class QuizEntityServiceTest {
 
     @InjectMocks
-    QuizServiceImpl quizService;
+    QuizItemServiceImpl quizService;
 
     @Mock
-    QuizRepository quizRepository;
+    QuizItemRepository quizRepository;
 
     @Test
     @DisplayName("퀴즈를 정상 생성한다.")
@@ -50,7 +49,7 @@ class QuizServiceTest {
 
 //        when(quizRepository.findById(anyLong())).thenReturn(Optional.of(QuizEntity.of(QuizType.SHORT_ANSWER, "short")));
 
-        QuizDto quiz = quizService.getQuiz(1L);
+        QuizItemDto quiz = quizService.getQuiz(1L);
 
         assertEquals("SHORT_ANSWER", quiz.getQuizType().toString());
 
