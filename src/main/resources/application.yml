@@ -7,7 +7,7 @@ spring:
   config:
     import: 'configserver:'
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name:
     url:
     username:
     password:
@@ -35,3 +35,7 @@ jwt:
 jasypt:
   encryptor:
     password: ${JASYPT_PASSWORD}
+
+redis:
+  embedded:
+    enabled: false

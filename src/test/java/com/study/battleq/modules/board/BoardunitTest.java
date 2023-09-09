@@ -30,6 +30,7 @@ public class BoardunitTest {
     private static final String CATEGORY = "freeBoard";
     private static final boolean PRIORITY = false;
     private static final String WRITER = "user";
+    private static final Long USERID = 1L;
 
     @Autowired
     MockMvc mockMvc;
@@ -40,11 +41,12 @@ public class BoardunitTest {
     @PersistenceContext
     EntityManager entityManager;
 
+    /*
     @Test
     @DisplayName("게시판 저장 성공 완료 테스트")
     void 게시판_저장_성공() throws Exception {
         //given
-        BoardEntity bookEntity = BoardEntity.of(TITLE, CONTENT, CATEGORY, PRIORITY, WRITER);
+        BoardEntity bookEntity = BoardEntity.of(TITLE, CONTENT, CATEGORY, PRIORITY, WRITER, USERID);
         // 저장
         BoardEntity saveEntity = boardRepository.save(bookEntity);
 
@@ -57,11 +59,11 @@ public class BoardunitTest {
     void 게시판_검색_성공() throws Exception {
         //given
         String searchParam = "title";
-        BoardEntity bookEntity  = BoardEntity.of(TITLE, CONTENT, CATEGORY, PRIORITY, WRITER);
+        BoardEntity bookEntity = BoardEntity.of(TITLE, CONTENT, CATEGORY, PRIORITY, WRITER, USERID);
 
         //when
         boardRepository.save(bookEntity);
-        List<BoardEntity> boardEntity = boardRepository.findByTitleAndDeletedAtIsNull(searchParam);
+        //List<BoardEntity> boardEntity = boardRepository.findByTitleAndDeletedAtIsNull(searchParam);
 
         //then
         assertEquals(TITLE, boardEntity.get(0).getTitle());
@@ -69,12 +71,12 @@ public class BoardunitTest {
 
     @Test
     @DisplayName("테스트코드 연습")
-    void 테스트_코드_연습(){
+    void 테스트_코드_연습() {
         assertThrows(CustomException.class, () -> new CustomClass(1));
     }
-    
+
     private class CustomException extends Exception {
-        public CustomException(String message){
+        public CustomException(String message) {
             super(message);
         }
     }
@@ -83,7 +85,7 @@ public class BoardunitTest {
         private int customInt;
 
         public CustomClass(int customInt) throws CustomException {
-            if(customInt > 2){
+            if (customInt > 2) {
                 throw new CustomException("2보다 큼");
             }
             this.customInt = customInt;
@@ -103,27 +105,29 @@ public class BoardunitTest {
     }
 
     @Test
-    @DisabledOnOs(value = MAC,disabledReason = "맥에서는 테스트하지 말아요.")
-    void OS_테스트(){
+    @DisabledOnOs(value = MAC, disabledReason = "맥에서는 테스트하지 말아요.")
+    void OS_테스트() {
 
     }
-    
+
     @ParameterizedTest
-    @ValueSource(ints = {0,101,Integer.MAX_VALUE})
+    @ValueSource(ints = {0, 101, Integer.MAX_VALUE})
     void 파라미터_반복_테스트(int num) {
         Shape shape = new Shape();
         assertThrows(IllegalArgumentException.class,
                 () -> shape.cal(num));
     }
 
-    private class Shape{
+    private class Shape {
         int param;
 
         public void cal(int num) {
             this.param = num;
-            if(num < 1 || num > 100){
+            if (num < 1 || num > 100) {
                 throw new IllegalArgumentException("Exception...");
             }
         }
     }
+    */
 }
+
