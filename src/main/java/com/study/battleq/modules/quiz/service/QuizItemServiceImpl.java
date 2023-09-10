@@ -90,7 +90,7 @@ public class QuizItemServiceImpl implements QuizItemService {
     @Override
     public void deleteQuiz(Long quizId) {
         try {
-            quizRepository.deleteById(quizId);
+            quizItemRepository.deleteById(quizId);
         } catch (IllegalArgumentException e) {
             //todo custom Exception 던지기
             throw new IllegalArgumentException();

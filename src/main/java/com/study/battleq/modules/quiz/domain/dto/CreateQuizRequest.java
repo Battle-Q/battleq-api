@@ -18,5 +18,5 @@ public class CreateQuizRequest {
 //    @NotEmpty(message = "category 를 선택해주세요.")
     private QuizCategoryType category;
 
-    private List<CreateQuizItemRequest> quizItemRequestList;
+//    private List<CreateQuizItemRequest> quizItemRequestList;
 }

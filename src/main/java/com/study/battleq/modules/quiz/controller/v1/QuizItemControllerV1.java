@@ -24,23 +24,24 @@ import java.util.List;
 @RequestMapping("/api/v1/quiz-items")
 public class QuizItemControllerV1 {
 
-    private final QuizItemService quizService;
+    private final QuizItemService quizItemService;
 
-    @Operation(summary = "전체 퀴즈 목록 조회", description = "전체 퀴즈 목록을 조회합니다.")
-    @GetMapping("")
-    public ResponseDto<List<QuizItemDto>> getQuizList() {
-        //todo 미구현
-        return ResponseDto.ok(new ArrayList<>());
-    }
 
-    @Operation(summary = "퀴즈 상세 조회", description = "퀴즈 상세정보를 조회합니다.")
+//    @Operation(summary = "전체 퀴즈 목록 조회", description = "전체 퀴즈 목록을 조회합니다.")
+//    @GetMapping("")
+//    public ResponseDto<List<QuizItemDto>> getQuizList() {
+//        //todo 미구현
+//        return ResponseDto.ok(new ArrayList<>());
+//    }
+
+    @Operation(summary = "퀴즈아이템 상세 조회", description = "퀴즈 아이템 상세정보를 조회합니다.")
     @GetMapping("/{quizId}")
     public ResponseDto<QuizItemDto> getQuiz(@PathVariable("quizId") Long quizId) {
-        return ResponseDto.ok(quizService.getQuiz(quizId));
+        return ResponseDto.ok(quizItemService.getQuiz(quizId));
     }
 
 
-    @Operation(summary = "퀴즈 생성", description = "퀴즈를 생성합니다.")
+    @Operation(summary = "퀴즈 아이템 생성", description = "퀴즈 아이템을 생성합니다.")
     @PostMapping("")
     public ResponseDto<Void> createQuiz(
             //@AuthenticationPrincipal BattleQUser user,
@@ -56,15 +57,15 @@ public class QuizItemControllerV1 {
             throw WrongQuizTypeException.thrown();
         }
 
-        quizService.createQuiz(createQuizRequest);
+        quizItemService.createQuiz(createQuizRequest);
 
         return ResponseDto.ok();
     }
 
-    @Operation(summary = "퀴즈 삭제", description = "퀴즈 ID로 퀴즈를 삭제합니다.")
+    @Operation(summary = "퀴즈 아이템 삭제", description = "퀴즈 아이템 ID로 퀴즈 아이템을 삭제합니다.")
     @DeleteMapping("/{quizId}")
     public ResponseDto<Void> deleteQuiz(@PathVariable("quizId") Long quizId) {
-        quizService.deleteQuiz(quizId);
+        quizItemService.deleteQuiz(quizId);
         return ResponseDto.ok();
     }
 

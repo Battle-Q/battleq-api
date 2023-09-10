@@ -1,7 +1,9 @@
 package com.study.battleq.modules.quiz.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.study.battleq.modules.quiz.domain.dto.CreateQuizItemRequest;
 import com.study.battleq.modules.quiz.domain.dto.CreateQuizRequest;
+import com.study.battleq.modules.quiz.domain.dto.CreateQuizResponse;
 import com.study.battleq.modules.quiz.domain.entity.QuizDto;
 import com.study.battleq.modules.quiz.domain.entity.QuizItemDto;
 import com.study.battleq.modules.quiz.domain.entity.QuizItem.QuizEntity;
@@ -25,9 +27,20 @@ public class QuizServiceImpl implements QuizService {
     }
 
     @Override
-    public void createQuiz(CreateQuizRequest createQuizRequest) {
-//        QuizEntity quiz = QuizEntity.of(createQuizRequest.getQuizType(), createQuizRequest.getQuizData());
+    public CreateQuizResponse createQuiz(CreateQuizRequest createQuizRequest) {
+
+        QuizEntity from = QuizEntity.from(createQuizRequest);
+
+        try {
+            QuizEntity save = quizRepository.save(from);
+            return CreateQuizResponse.from(save);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            e.printStackTrace();
+            throw new IllegalArgumentException();
         }
+
+    }
 
     @Override
     public void createShortAnswer(CreateQuizRequest createQuizRequest) {
