@@ -3,9 +3,12 @@ package com.study.battleq.modules.quiz.domain.dto;
 import com.study.battleq.modules.quiz.domain.entity.QuizCategoryType;
 import com.study.battleq.modules.quiz.domain.entity.QuizItem.QuizEntity;
 import lombok.Builder;
+import lombok.Data;
+
 import java.time.LocalDateTime;
 
 @Builder
+@Data
 public class CreateQuizResponse {
 
     private Long id;

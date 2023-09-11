@@ -4,13 +4,13 @@ import com.study.battleq.modules.quiz.domain.dto.CreateQuizItemRequest;
 import com.study.battleq.modules.quiz.domain.entity.QuizItemDto;
 
 public interface QuizItemService {
-    QuizItemDto getQuiz(Long quizId);
+    QuizItemDto getQuizItem(Long quizId);
 
 
-    void createQuiz(CreateQuizItemRequest createQuizRequest);
-    void createShortAnswer(CreateQuizItemRequest createQuizRequest);
-    void createCatchMind(CreateQuizItemRequest createQuizRequest);
-    void createTrueOrFalse(CreateQuizItemRequest createQuizRequest);
+    void createQuizItem(CreateQuizItemRequest createQuizItemRequest);
+    void createShortAnswer(CreateQuizItemRequest createQuizItemRequest);
+    void createCatchMind(CreateQuizItemRequest createQuizItemRequest);
+    void createTrueOrFalse(CreateQuizItemRequest createQuizItemRequest);
 
-    void deleteQuiz(Long quizId);
+    void deleteQuizItem(Long quizId);
 }

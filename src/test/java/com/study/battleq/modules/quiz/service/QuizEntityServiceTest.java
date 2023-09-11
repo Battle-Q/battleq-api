@@ -49,7 +49,7 @@ class QuizEntityServiceTest {
 
 //        when(quizRepository.findById(anyLong())).thenReturn(Optional.of(QuizEntity.of(QuizType.SHORT_ANSWER, "short")));
 
-        QuizItemDto quiz = quizService.getQuiz(1L);
+        QuizItemDto quiz = quizService.getQuizItem(1L);
 
         assertEquals("SHORT_ANSWER", quiz.getQuizType().toString());
 
@@ -61,7 +61,7 @@ class QuizEntityServiceTest {
 
         when(quizRepository.findById(0L)).thenReturn(Optional.empty());
 
-        assertThrows(NoSuchElementException.class, () -> quizService.getQuiz(0L));
+        assertThrows(NoSuchElementException.class, () -> quizService.getQuizItem(0L));
 
     }
 
@@ -72,7 +72,7 @@ class QuizEntityServiceTest {
         //삭제된 객체를 어떻게 확인하지?
         //void 테스트는 어떻게하나?
 //         service 단에서 repository mock 객체를 사용했을 때 삭제 테스트는 없는거 같다
-        quizService.deleteQuiz(anyLong());
+        quizService.deleteQuizItem(anyLong());
 
         verify(quizRepository, times(1)).deleteById(anyLong());
 

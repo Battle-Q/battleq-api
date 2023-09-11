@@ -17,22 +17,23 @@ public class QuizItemServiceImpl implements QuizItemService {
 
     private final QuizItemRepository quizItemRepository;
     @Override
-    public void createQuiz(CreateQuizItemRequest createQuizRequest) {
-//        QuizEntity quiz = QuizEntity.of(createQuizRequest.getQuizType(), createQuizRequest.getQuizData());
-        switch (createQuizRequest.getQuizType()) {
-            case SHORT_ANSWER -> createShortAnswer(createQuizRequest);
+    public void createQuizItem(CreateQuizItemRequest createQuizItemRequest) {
+        QuizItemEntity quizItem = QuizItemEntity.ofByBuilder(createQuizItemRequest);
+        quizItemRepository.save(quizItem);
+
+//        switch (createQuizItemRequest.getQuizType()) {
+//            case SHORT_ANSWER -> createShortAnswer(createQuizItemRequest);
 //            case TRUE_OR_FALSE -> createShortAnswer(createQuizRequest);
 //            case MULTIPLE_CHOICE -> createShortAnswer(createQuizRequest);
 //            case INITIAL -> createShortAnswer(createQuizRequest);
-            case CATCH_MIND -> createCatchMind(createQuizRequest);
+//            case CATCH_MIND -> createCatchMind(createQuizItemRequest);
 //            case MAKE_ORDER -> quizService.createCatchMind(createQuizRequest);
-        }
 
         
     }
 
     @Override
-    public QuizItemDto getQuiz(Long quizId) {
+    public QuizItemDto getQuizItem(Long quizId) {
         // 삭제된거 고려
         // 트랜잭션 분리
         QuizItemEntity quiz = quizItemRepository.findByIdAndDeletedAtIsNull(quizId).orElseThrow(QuizNotFoundException::thrown);
@@ -43,7 +44,7 @@ public class QuizItemServiceImpl implements QuizItemService {
     }
 
     @Override
-    public void createShortAnswer(CreateQuizItemRequest createQuizRequest) {
+    public void createShortAnswer(CreateQuizItemRequest createQuizItemRequest) {
 ////        QuizEntity quiz = QuizEntity.of(createQuizRequest.getQuizType(), createQuizRequest.getQuizData());
 //        ShortAnswer quiz = ShortAnswer.of(createQuizRequest.getQuestion(), createQuizRequest.getAnswer(), createQuizRequest.getDescription());
 //
@@ -57,7 +58,7 @@ public class QuizItemServiceImpl implements QuizItemService {
     }
 
     @Override
-    public void createTrueOrFalse(CreateQuizItemRequest createQuizRequest) {
+    public void createTrueOrFalse(CreateQuizItemRequest createQuizItemRequest) {
 ////        QuizEntity quiz = QuizEntity.of(createQuizRequest.getQuizType(), createQuizRequest.getQuizData());
 //        ShortAnswer quiz = ShortAnswer.of(createQuizRequest.getQuestion(), createQuizRequest.getAnswer(), createQuizRequest.getDescription());
 //
@@ -72,7 +73,7 @@ public class QuizItemServiceImpl implements QuizItemService {
     }
 
     @Override
-    public void createCatchMind(CreateQuizItemRequest createQuizRequest) {
+    public void createCatchMind(CreateQuizItemRequest createQuizItemRequest) {
 //        QuizEntity quiz = QuizEntity.of(createQuizRequest.getQuizType(), createQuizRequest.getQuizData());
 //        CatchMind quiz = CatchMind.of(createQuizRequest.getQuestion(), createQuizRequest.getAnswer(), createQuizRequest.getDescription(), createQuizRequest.getImage());
 //
@@ -88,7 +89,7 @@ public class QuizItemServiceImpl implements QuizItemService {
 
 
     @Override
-    public void deleteQuiz(Long quizId) {
+    public void deleteQuizItem(Long quizId) {
         try {
             quizItemRepository.deleteById(quizId);
         } catch (IllegalArgumentException e) {

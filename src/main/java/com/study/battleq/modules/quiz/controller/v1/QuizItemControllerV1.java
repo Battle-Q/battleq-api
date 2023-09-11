@@ -15,8 +15,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.List;
 
 @Tag(name = "Quiz-Item-V1")
 @RestController
@@ -37,7 +35,7 @@ public class QuizItemControllerV1 {
     @Operation(summary = "퀴즈아이템 상세 조회", description = "퀴즈 아이템 상세정보를 조회합니다.")
     @GetMapping("/{quizId}")
     public ResponseDto<QuizItemDto> getQuiz(@PathVariable("quizId") Long quizId) {
-        return ResponseDto.ok(quizItemService.getQuiz(quizId));
+        return ResponseDto.ok(quizItemService.getQuizItem(quizId));
     }
 
 
@@ -53,11 +51,11 @@ public class QuizItemControllerV1 {
             throw NoneQuizTypeException.thrown();
         }
 
-        if(EnumUtils.isValidEnum(QuizItemType.class, createQuizRequest.getQuizType().toString())){
+        if(!EnumUtils.isValidEnum(QuizItemType.class, createQuizRequest.getQuizType().toString())){
             throw WrongQuizTypeException.thrown();
         }
 
-        quizItemService.createQuiz(createQuizRequest);
+        quizItemService.createQuizItem(createQuizRequest);
 
         return ResponseDto.ok();
     }
@@ -65,7 +63,7 @@ public class QuizItemControllerV1 {
     @Operation(summary = "퀴즈 아이템 삭제", description = "퀴즈 아이템 ID로 퀴즈 아이템을 삭제합니다.")
     @DeleteMapping("/{quizId}")
     public ResponseDto<Void> deleteQuiz(@PathVariable("quizId") Long quizId) {
-        quizItemService.deleteQuiz(quizId);
+        quizItemService.deleteQuizItem(quizId);
         return ResponseDto.ok();
     }
 
